@@ -1,0 +1,11 @@
+{
+  "Version": 1,
+  "Hash": "7JHWl9VN0SftErtUYzdecq8zCPeq4pxkaMY+ERgWsWA=",
+  "Source": "PathPaver.Web",
+  "BasePath": "_content/PathPaver.Web",
+  "Mode": "Default",
+  "ManifestType": "Build",
+  "ReferencedProjectsConfiguration": [],
+  "DiscoveryPatterns": [],
+  "Assets": []
+}
