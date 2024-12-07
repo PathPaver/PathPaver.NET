@@ -1,4 +1,4 @@
-# Clean Architecture ASP.NET core Project
+# Clean Architecture ASP.NET Core project using .NET 8.0
 
 ## Domain Layer 
 the project that contains the domain layer, including the entities, value objects, and domain services
