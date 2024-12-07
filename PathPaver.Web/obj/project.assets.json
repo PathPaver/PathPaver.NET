@@ -107,6 +107,42 @@
         "frameworkReferences": [
           "Microsoft.AspNetCore.App"
         ]
+      },
+      "PathPaver.Application/1.0.0": {
+        "type": "project",
+        "framework": ".NETCoreApp,Version=v8.0",
+        "dependencies": {
+          "PathPaver.Domain": "1.0.0"
+        },
+        "compile": {
+          "bin/placeholder/PathPaver.Application.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/PathPaver.Application.dll": {}
+        }
+      },
+      "PathPaver.Domain/1.0.0": {
+        "type": "project",
+        "framework": ".NETCoreApp,Version=v8.0",
+        "compile": {
+          "bin/placeholder/PathPaver.Domain.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/PathPaver.Domain.dll": {}
+        }
+      },
+      "PathPaver.Persistence/1.0.0": {
+        "type": "project",
+        "framework": ".NETCoreApp,Version=v8.0",
+        "dependencies": {
+          "PathPaver.Application": "1.0.0"
+        },
+        "compile": {
+          "bin/placeholder/PathPaver.Persistence.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/PathPaver.Persistence.dll": {}
+        }
       }
     }
   },
@@ -473,11 +509,28 @@
         "swashbuckle.aspnetcore.swaggerui.6.6.2.nupkg.sha512",
         "swashbuckle.aspnetcore.swaggerui.nuspec"
       ]
+    },
+    "PathPaver.Application/1.0.0": {
+      "type": "project",
+      "path": "../PathPaver.Application/PathPaver.Application.csproj",
+      "msbuildProject": "../PathPaver.Application/PathPaver.Application.csproj"
+    },
+    "PathPaver.Domain/1.0.0": {
+      "type": "project",
+      "path": "../PathPaver.Domain/PathPaver.Domain.csproj",
+      "msbuildProject": "../PathPaver.Domain/PathPaver.Domain.csproj"
+    },
+    "PathPaver.Persistence/1.0.0": {
+      "type": "project",
+      "path": "../PathPaver.Persistence/PathPaver.Persistence.csproj",
+      "msbuildProject": "../PathPaver.Persistence/PathPaver.Persistence.csproj"
     }
   },
   "projectFileDependencyGroups": {
     "net8.0": [
       "Microsoft.AspNetCore.OpenApi >= 8.0.10",
+      "PathPaver.Application >= 1.0.0",
+      "PathPaver.Persistence >= 1.0.0",
       "Swashbuckle.AspNetCore >= 6.6.2"
     ]
   },
@@ -505,7 +558,14 @@
       "frameworks": {
         "net8.0": {
           "targetAlias": "net8.0",
-          "projectReferences": {}
+          "projectReferences": {
+            "/Users/ohf/Documents/projects/PathPaver/PathPaver.Application/PathPaver.Application.csproj": {
+              "projectPath": "/Users/ohf/Documents/projects/PathPaver/PathPaver.Application/PathPaver.Application.csproj"
+            },
+            "/Users/ohf/Documents/projects/PathPaver/PathPaver.Persistence/PathPaver.Persistence.csproj": {
+              "projectPath": "/Users/ohf/Documents/projects/PathPaver/PathPaver.Persistence/PathPaver.Persistence.csproj"
+            }
+          }
         }
       },
       "warningProperties": {

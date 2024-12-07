@@ -1,11 +1,30 @@
 {
   "version": 3,
   "targets": {
-    "net8.0": {}
+    "net8.0": {
+      "PathPaver.Domain/1.0.0": {
+        "type": "project",
+        "framework": ".NETCoreApp,Version=v8.0",
+        "compile": {
+          "bin/placeholder/PathPaver.Domain.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/PathPaver.Domain.dll": {}
+        }
+      }
+    }
   },
-  "libraries": {},
+  "libraries": {
+    "PathPaver.Domain/1.0.0": {
+      "type": "project",
+      "path": "../PathPaver.Domain/PathPaver.Domain.csproj",
+      "msbuildProject": "../PathPaver.Domain/PathPaver.Domain.csproj"
+    }
+  },
   "projectFileDependencyGroups": {
-    "net8.0": []
+    "net8.0": [
+      "PathPaver.Domain >= 1.0.0"
+    ]
   },
   "packageFolders": {
     "/Users/ohf/.nuget/packages/": {}
@@ -31,7 +50,11 @@
       "frameworks": {
         "net8.0": {
           "targetAlias": "net8.0",
-          "projectReferences": {}
+          "projectReferences": {
+            "/Users/ohf/Documents/projects/PathPaver/PathPaver.Domain/PathPaver.Domain.csproj": {
+              "projectPath": "/Users/ohf/Documents/projects/PathPaver/PathPaver.Domain/PathPaver.Domain.csproj"
+            }
+          }
         }
       },
       "warningProperties": {
