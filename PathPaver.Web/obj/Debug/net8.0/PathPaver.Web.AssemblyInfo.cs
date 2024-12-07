@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("PathPaver.Web")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+f4573829db91b243853575ab56c7744786095abf")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+b9d2aba2e61a40bb2fa91944e9155ea77fae68d4")]
 [assembly: System.Reflection.AssemblyProductAttribute("PathPaver.Web")]
 [assembly: System.Reflection.AssemblyTitleAttribute("PathPaver.Web")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
