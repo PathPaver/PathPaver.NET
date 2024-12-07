@@ -1,5 +1,14 @@
 # Clean Architecture ASP.NET Core project using .NET 8.0
 
+## Requirements
+- .NET 8.0
+
+## Restore Packages
+Same level of .sln
+```sh
+docker restore
+```
+
 ## Domain Layer 
 the project that contains the domain layer, including the entities, value objects, and domain services
 
