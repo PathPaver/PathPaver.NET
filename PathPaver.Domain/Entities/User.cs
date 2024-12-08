@@ -2,12 +2,14 @@ using PathPaver.Domain.Common;
 
 namespace PathPaver.Domain.Entities;
 
-public sealed class User(string? username, string email) : BaseEntity
+public sealed class User(string? username, string email, string? biography) : BaseEntity
 {
     #region Properties
     
-    private string Email { get; set; } = email;
-    private string Username { get; set; } = username ?? $"Anonymous";
+    private string Email { get; } = email;
+    private string Username { get; } = username ?? $"Anonymous";
+    private string Biography { get; set; } = biography ?? "No bio";
+    
     #endregion
     
     /**
@@ -17,6 +19,7 @@ public sealed class User(string? username, string email) : BaseEntity
     {
         Console.WriteLine(Id + 
                           Username +
+                          Biography +
                           Email +
                           DateCreated +
                           IsVisible);
