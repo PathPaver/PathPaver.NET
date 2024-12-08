@@ -8,7 +8,6 @@ public sealed class User(string? username, string email) : BaseEntity
     
     private string Email { get; set; } = email;
     private string Username { get; set; } = username ?? $"Anonymous";
-    
     #endregion
     
     /**
