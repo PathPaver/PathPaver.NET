@@ -10,7 +10,7 @@ public abstract class BaseEntity
 {
     [Key] 
     [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-    protected static Guid Id { get; set; }
+    protected static long Id { get; set; }
     protected DateTimeOffset DateCreated { get; set; } = DateTimeOffset.Now;
     protected bool IsVisible { get; set; } = false;
 }
