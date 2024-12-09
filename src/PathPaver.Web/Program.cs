@@ -1,4 +1,6 @@
+using PathPaver.Application.Services.Auth;
 using PathPaver.Application.Services.Entities;
+using PathPaver.Domain.Entities;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -16,6 +18,8 @@ var app = builder.Build();
 #region Security
 
 // Authentication related stuff should go here
+app.MapPost("/authenticate", (User user, AuthService auth) => auth.GenerateToken(user));
+
 #endregion
 
 #region Middlewares
