@@ -11,30 +11,29 @@ namespace PathPaver.Application.Services.Auth
         public static string GenerateToken(User user)
         {
             var tokenHandler = new JwtSecurityTokenHandler();
-
             var key = Encoding.ASCII.GetBytes(AuthSettings.PrivateKey);
-            var creds = new SigningCredentials(
+            
+            var credentials = new SigningCredentials(
                 new SymmetricSecurityKey(key),
                 SecurityAlgorithms.HmacSha256Signature); // Create signing hash with secret key
 
             var tokenSettings = new SecurityTokenDescriptor
             {
                 Subject = GenerateTokenSettings(user),
-                SigningCredentials = creds
+                Expires = DateTime.UtcNow.AddHours(2), // Expire in 2 hours after connection
+                SigningCredentials = credentials
             };
-
-            var token = tokenHandler.CreateToken(tokenSettings);
-            return tokenHandler.WriteToken(token);
+            
+            return tokenHandler.WriteToken(tokenHandler.CreateToken(tokenSettings));
         }
 
         private static ClaimsIdentity GenerateTokenSettings(User user) // Generate payload of token
         {
-            var claims = new ClaimsIdentity();
-
-            claims.AddClaim(new Claim(ClaimTypes.Name, user.Username));
-            claims.AddClaim(new Claim(ClaimTypes.Email, user.Email));
-
-            return claims;
+            return new ClaimsIdentity(
+            [
+                new Claim(ClaimTypes.Name, user.Username),
+                new Claim(ClaimTypes.Email, user.Email)
+            ]);
         }
     }
 }
