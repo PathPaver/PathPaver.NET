@@ -9,7 +9,7 @@ public class UserService() : IService<User>
      */
     public User GetById(long id)
     {
-        return new User("Hello", "coco@gmail.com");
+        return new User("Hello", "coco@gmail.com", "myPass");
     }
 
     public void Create(User inst)
