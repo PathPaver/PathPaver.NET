@@ -8,7 +8,7 @@ namespace PathPaver.Application.Services.Auth
 {
     public class AuthService
     {
-        public static string GenerateToken(User user)
+        public string GenerateToken(User user)
         {
             var tokenHandler = new JwtSecurityTokenHandler();
             var key = Encoding.ASCII.GetBytes(AuthSettings.PrivateKey);
@@ -20,10 +20,9 @@ namespace PathPaver.Application.Services.Auth
             var tokenSettings = new SecurityTokenDescriptor
             {
                 Subject = GenerateTokenSettings(user),
-                Expires = DateTime.UtcNow.AddHours(2), // Expire in 2 hours after connection
+                Expires = DateTime.UtcNow.AddHours(1), // Expire in 1 hour after created
                 SigningCredentials = credentials
             };
-            
             return tokenHandler.WriteToken(tokenHandler.CreateToken(tokenSettings));
         }
 
@@ -32,7 +31,7 @@ namespace PathPaver.Application.Services.Auth
             return new ClaimsIdentity(
             [
                 new Claim(ClaimTypes.Name, user.Username),
-                new Claim(ClaimTypes.Email, user.Email)
+                new Claim(ClaimTypes.Email, user.Email),
             ]);
         }
     }
