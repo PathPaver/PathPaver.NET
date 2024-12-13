@@ -7,7 +7,7 @@ public sealed class User(string? username, string email, string biography = "No 
     #region Properties
     
     public string Email { get; } = email;
-    public string Username { get; } = username ?? $"Anonymous";
+    public string Username { get; set; } = username ?? $"Anonymous";
     public string Biography { get; set; } = biography;
     
     #endregion
