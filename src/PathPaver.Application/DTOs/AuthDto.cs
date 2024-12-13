@@ -1,6 +1,3 @@
 namespace PathPaver.Application.DTOs;
 
-public class AuthDto
-{
-    
-}
+public record AuthDto(string UsernameOrEmail, string Password);
