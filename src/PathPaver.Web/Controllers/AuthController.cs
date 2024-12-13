@@ -10,7 +10,7 @@ namespace PathPaver.Web.Controllers;
 public class AuthController(AuthService authService, UserService userService) : ControllerBase
 {
     [HttpPost("login")]
-    public string LoginUser(AuthUserDto authUserDto)
+    public IActionResult LoginUser(AuthUserDto authUserDto)
     {
         /*
          * Logic to find User by info from auhtUserDto
@@ -20,7 +20,7 @@ public class AuthController(AuthService authService, UserService userService) : 
          */
         var user = userService.GetById(1);
 
-        return authService.GenerateToken(user);
+        return Ok(authService.GenerateToken(user));
     }
 
     [HttpPost("register")]
