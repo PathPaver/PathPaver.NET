@@ -2,7 +2,7 @@ using PathPaver.Domain.Entities;
 
 namespace PathPaver.Application.Services.Entities;
     
-public class UserService : IService<User>
+public class UserService() : IService<User>
 {
     /**
      * it's a test, the id doesn't relly to anything
