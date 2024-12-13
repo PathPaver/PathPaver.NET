@@ -18,7 +18,7 @@ var app = builder.Build();
 #region Security
 
 // Authentication related stuff should go here
-app.MapPost("/authenticate", (User user, AuthService auth) => auth.GenerateToken(user));
+// app.MapPost("/authenticate", (User user, AuthService auth) => auth.GenerateToken(user));
 
 #endregion
 

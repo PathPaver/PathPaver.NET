@@ -21,7 +21,7 @@ public class UserController(UserService userService) : ControllerBase
         }
         catch (Exception e)
         {
-            throw new UserNotFound(id, e.Message);
+            throw new UserNotFoundException(id, e.Message);
         }        
     }
 }
