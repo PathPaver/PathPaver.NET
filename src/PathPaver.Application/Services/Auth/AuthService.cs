@@ -8,14 +8,14 @@ namespace PathPaver.Application.Services.Auth
 {
     public class AuthService
     {
-        public string GenerateToken(User user)
+        public static string GenerateToken(User user)
         {
             var tokenHandler = new JwtSecurityTokenHandler();
 
             var key = Encoding.ASCII.GetBytes(AuthSettings.PrivateKey);
             var creds = new SigningCredentials(
                 new SymmetricSecurityKey(key),
-                SecurityAlgorithms.HmacSha256Signature); // Créer un signing hash avec le key
+                SecurityAlgorithms.HmacSha256Signature); // Create signing hash with secret key
 
             var tokenSettings = new SecurityTokenDescriptor
             {
@@ -27,7 +27,7 @@ namespace PathPaver.Application.Services.Auth
             return tokenHandler.WriteToken(token);
         }
 
-        private static ClaimsIdentity GenerateTokenSettings(User user) // Génère le payload du token
+        private static ClaimsIdentity GenerateTokenSettings(User user) // Generate payload of token
         {
             var claims = new ClaimsIdentity();
 
