@@ -6,7 +6,9 @@ var builder = WebApplication.CreateBuilder(args);
 
 #region Services
 
+builder.Services.AddScoped<AuthService>();
 builder.Services.AddScoped<UserService>();
+
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
