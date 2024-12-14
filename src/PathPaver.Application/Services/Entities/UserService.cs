@@ -5,10 +5,10 @@ namespace PathPaver.Application.Services.Entities;
     
 public class UserService(IUserRepository userRepository)
 {
-    public User GetById(long id)
+    public User GetByEmail(string email)
     {
         // return new User("Hello", "coco@gmail.com", "myPass");
-        return userRepository.GetById(id);
+        return userRepository.GetByEmail(email);
     }
 
     public void Create(User inst)
@@ -16,9 +16,9 @@ public class UserService(IUserRepository userRepository)
         userRepository.Create(inst);
     }
 
-    public void Delete(long id)
+    public void Delete(string username)
     {
-        userRepository.Delete(id);
+        userRepository.Delete(username);
     }
 
     public void Update(long id, User inst)

@@ -8,6 +8,18 @@ namespace PathPaver.Application.Services.Auth
 {
     public class AuthService
     {
+        #region Password Related
+
+        public string HashString(string toHash) => 
+            BCrypt.Net.BCrypt.EnhancedHashPassword(toHash);
+
+        public bool CompareHash(string hashed, string toHash) => 
+            BCrypt.Net.BCrypt.EnhancedVerify(toHash, hashed);
+        
+        #endregion
+
+        #region JWT Related
+
         public string GenerateToken(User user)
         {
             var tokenHandler = new JwtSecurityTokenHandler();
@@ -31,8 +43,9 @@ namespace PathPaver.Application.Services.Auth
             return new ClaimsIdentity(
             [
                 new Claim(ClaimTypes.Name, user.Username),
-                new Claim(ClaimTypes.Email, user.Email),
+                new Claim(ClaimTypes.Email, user.Email)
             ]);
         }
+        #endregion
     }
 }
