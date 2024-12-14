@@ -7,14 +7,9 @@ namespace PathPaver.Persistence.Context;
 
 public class UserDbContext : DbContext
 {
-    public DbSet<User> Users { get; set; }
+    public DbSet<User> Users { get; init; }
 
     public UserDbContext(DbContextOptions options) : base(options) { }
-
-    // public static UserDbContext Create(IMongoDatabase database) => 
-    //     new(new DbContextOptionsBuilder<UserDbContext>()
-    //         .UseMongoDB(database.Client, database.DatabaseNamespace.DatabaseName)
-    //         .Options);
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
