@@ -1,4 +1,3 @@
-using PathPaver.Application.Common.Exceptions.Entities;
 using PathPaver.Application.Repository.Entities;
 using PathPaver.Domain.Entities;
 
@@ -8,16 +7,17 @@ public sealed class UserRepository() : BaseRepository<User>, IUserRepository
 {
     #region Overrided Methods from BaseRepository
 
-    public User GetById(long id)
+    public User GetByEmail(string email)
     {
-        // return Get(id) ?? throw new UserNotFoundException(id);
-        return new User("dwda", "dwadwa", "dwadawd");
+        return _context.Users.First(u => u.Email == email);
     }
-
-    public override void Update(long id, User updatedUser)
+    
+    public override void Update(string name, User updatedUser)
     {
-        var toUpdateUser = Get(id);
+        var toUpdateUser = GetByEmail(name);
+        
         toUpdateUser.Username = updatedUser.Username;
+        // still need to update everything else
         
         _context.Update(toUpdateUser);
     }
