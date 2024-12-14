@@ -7,9 +7,9 @@ public sealed class UserRepository() : BaseRepository<User>, IUserRepository
 {
     #region Overrided Methods from BaseRepository
 
-    public User GetByEmail(string email)
+    public User? GetByEmail(string email)
     {
-        return _context.Users.First(u => u.Email == email);
+        return _context.Users.FirstOrDefault(u => u.Email == email);
     }
     
     public override void Update(string name, User updatedUser)

@@ -5,9 +5,8 @@ namespace PathPaver.Application.Services.Entities;
     
 public class UserService(IUserRepository userRepository)
 {
-    public User GetByEmail(string email)
+    public User? GetByEmail(string email)
     {
-        // return new User("Hello", "coco@gmail.com", "myPass");
         return userRepository.GetByEmail(email);
     }
 

@@ -15,11 +15,13 @@ public class AuthController(AuthService authService, UserService userService) : 
     public IActionResult LoginUser(AuthUserDto authUserDto)
     {
         var user = userService.GetByEmail(authUserDto.Email);
+
+        if (user == null || !authService.CompareHash(user.Password, authUserDto.Password))
+        {
+            return Unauthorized("Invalid email or password.");
+        }
         
-        if (authService.CompareHash(user.Password, authUserDto.Password))
-            return Ok(authService.GenerateToken(user));
-        
-        return Unauthorized("Wrong information");
+        return Ok(authService.GenerateToken(user));
     }
 
     [HttpPost("signup")]
