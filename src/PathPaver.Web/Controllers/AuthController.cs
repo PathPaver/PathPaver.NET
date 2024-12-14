@@ -21,7 +21,7 @@ public class AuthController(AuthService authService, UserService userService) : 
             return Unauthorized("Invalid email or password.");
         }
         
-        return Ok(authService.GenerateToken(user));
+        return Ok(new TokenDto(authService.GenerateToken(user)));
     }
 
     [HttpPost("signup")]
