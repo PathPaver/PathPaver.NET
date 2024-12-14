@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Mvc;
 using PathPaver.Application.DTOs;
 using PathPaver.Application.Services.Auth;
 using PathPaver.Application.Services.Entities;
+using PathPaver.Domain.Entities;
 
 namespace PathPaver.Web.Controllers;
 
@@ -12,21 +13,31 @@ public class AuthController(AuthService authService, UserService userService) : 
     [HttpPost("login")]
     public IActionResult LoginUser(AuthUserDto authUserDto)
     {
-        /*
-         * Logic to find User by info from auhtUserDto
-         * AuthUserDto have userOrEmail & password
-         *
-         * The line below will be change - don't freak out
-         */
+        var user = userService.GetByEmail(authUserDto.Email);
         
-        var user = userService.GetById(1);
-
-        return Ok(authService.GenerateToken(user));
+        if (authService.CompareHash(user.Password, authUserDto.Password))
+            return Ok(authService.GenerateToken(user));
+        
+        return Unauthorized("Wrong information");
     }
 
-    [HttpPost("register")]
-    public void SignupUser()
+    [HttpPost("signup")]
+    public IActionResult SignupUser(SignupUserDto userDto)
     {
-        
+        try
+        {
+            userService.Create(new User(
+                username: userDto.Username,
+                password: authService.HashString(userDto.Password),
+                email:    userDto.Email)
+            );
+            
+            return Ok("User account was created successfully");
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+            throw;
+        }
     }
 }

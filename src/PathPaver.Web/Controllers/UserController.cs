@@ -11,17 +11,17 @@ namespace PathPaver.Web.Controllers;
 public class UserController(UserService userService) : ControllerBase
 {
     
-    [HttpGet("{id:long}")]
-    public IActionResult GetById(long id)
+    [HttpGet("{email}")]
+    public IActionResult GetByEmail(string email)
     {
         try
         {
-            var u = userService.GetById(id);
+            var u = userService.GetByEmail(email);
             return Ok(new UserDto(u.Username, u.Biography));
         }
         catch (Exception e)
         {
-            throw new UserNotFoundException(id, e.Message);
+            throw new UserNotFoundException(email, e.Message);
         }        
     }
 }
