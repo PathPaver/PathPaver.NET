@@ -13,7 +13,9 @@ var builder = WebApplication.CreateBuilder(args);
 
 #region Services
 
-// To handle appsettings.json content for atlas cluster in DbSettings.cs file
+builder.Configuration.AddUserSecrets<Program>();
+
+// To handle UserSecrets content for atlas cluster in DbSettings.cs file
 builder.Configuration.GetSection("MongoCluster").Get<DbSettings>();
 
 builder.Services.AddScoped<IUserRepository, UserRepository>();
