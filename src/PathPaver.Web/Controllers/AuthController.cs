@@ -3,6 +3,7 @@ using PathPaver.Application.DTOs;
 using PathPaver.Application.Services.Auth;
 using PathPaver.Application.Services.Entities;
 using PathPaver.Domain.Entities;
+using PathPaver.Domain.Entities.Enum;
 
 namespace PathPaver.Web.Controllers;
 
@@ -29,9 +30,9 @@ public class AuthController(AuthService authService, UserService userService) : 
             userService.Create(new User(
                 username: userDto.Username,
                 password: authService.HashString(userDto.Password),
-                email:    userDto.Email)
+                email:    userDto.Email,
+                roles:    [nameof(Role.User)])
             );
-            
             return Ok("User account was created successfully");
         }
         catch (Exception e)
