@@ -1,3 +1,4 @@
+using System.ComponentModel.DataAnnotations;
 using PathPaver.Domain.Common;
 
 namespace PathPaver.Domain.Entities;
@@ -17,7 +18,6 @@ public sealed class User(string? username, string email, string password, string
     {
         return $"{Username} - " +
                $"{Biography} - " +
-               $"{Email} - " +
-               $"{Id} - ";
+               $"{Email} - ";
     }
 }

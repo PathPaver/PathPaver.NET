@@ -18,6 +18,7 @@ public class AuthController(AuthService authService, UserService userService) : 
          *
          * The line below will be change - don't freak out
          */
+        
         var user = userService.GetById(1);
 
         return Ok(authService.GenerateToken(user));
@@ -26,6 +27,6 @@ public class AuthController(AuthService authService, UserService userService) : 
     [HttpPost("register")]
     public void SignupUser()
     {
-        // ....
+        
     }
 }

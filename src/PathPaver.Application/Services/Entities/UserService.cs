@@ -1,25 +1,24 @@
+using PathPaver.Application.Repository.Entities;
 using PathPaver.Domain.Entities;
 
 namespace PathPaver.Application.Services.Entities;
     
-public class UserService() : IService<User>
+public class UserService(IUserRepository userRepository)
 {
-    /**
-     * it's a test, the id doesn't relly to anything
-     */
     public User GetById(long id)
     {
-        return new User("Hello", "coco@gmail.com", "myPass");
+        // return new User("Hello", "coco@gmail.com", "myPass");
+        return userRepository.GetById(id);
     }
 
     public void Create(User inst)
     {
-        throw new NotImplementedException();
+        userRepository.Create(inst);
     }
 
     public void Delete(long id)
     {
-        throw new NotImplementedException();
+        userRepository.Delete(id);
     }
 
     public void Update(long id, User inst)

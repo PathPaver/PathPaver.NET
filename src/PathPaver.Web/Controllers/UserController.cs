@@ -16,7 +16,7 @@ public class UserController(UserService userService) : ControllerBase
     {
         try
         {
-            var u = userService.GetById(1);
+            var u = userService.GetById(id);
             return Ok(new UserDto(u.Username, u.Biography));
         }
         catch (Exception e)
