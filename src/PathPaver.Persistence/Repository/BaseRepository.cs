@@ -12,7 +12,7 @@ public class BaseRepository<T> : IBaseRepository<T> where T : BaseEntity // Forc
 {
     #region Members
     
-    protected readonly DbContext _context;
+    protected readonly UserDbContext _context;
     #endregion
 
     #region Constructors
@@ -20,10 +20,10 @@ public class BaseRepository<T> : IBaseRepository<T> where T : BaseEntity // Forc
     protected BaseRepository()
     {
         var client = new MongoClient(MongoClientSettings
-            .FromConnectionString("ConnectionString"));
+            .FromConnectionString(DbSettings.ConnectionURI));
         
         var dbContextOptions = new DbContextOptionsBuilder<UserDbContext>()
-            .UseMongoDB(client, "DBName");
+            .UseMongoDB(client, DbSettings.DatabaseName);
         
         // Here it basically just focus on the UserDBContext. It should be changed in the futur
         _context = new UserDbContext(dbContextOptions.Options);
@@ -32,9 +32,9 @@ public class BaseRepository<T> : IBaseRepository<T> where T : BaseEntity // Forc
     
     #region CustomMethods
     
-    public virtual T Get(long id)
+    public virtual T Get(string name)
     {
-        return _context.Find<T>(id)!;
+        return _context.Find<T>(name)!;
     }
 
     public virtual void Create(T inst)
@@ -43,13 +43,13 @@ public class BaseRepository<T> : IBaseRepository<T> where T : BaseEntity // Forc
             .Context.SaveChanges();
     }
 
-    public virtual void Delete(long id)
+    public virtual void Delete(string name)
     {
-        _context.Remove(Get(id))
+        _context.Remove(Get(name))
             .Context.SaveChanges();
     }
     
-    public virtual void Update(long id, T newInst)
+    public virtual void Update(string name, T newInst)
     {
         // Implement on child Class 
         throw new NotImplementedException();
