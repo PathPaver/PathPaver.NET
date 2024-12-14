@@ -10,6 +10,10 @@ Same level of .sln
 docker restore
 ```
 
+## Add Cluster infor in appsettings.json
+The file is located in the **_PathPaver.Web_**
+![appsettings](assets/appsettings_ex.png)
+
 ## Domain Layer 
 the project that contains the domain layer, including the entities, value objects, and domain services
 
