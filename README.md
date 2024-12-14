@@ -18,9 +18,12 @@ docker restore
 
 ### Add Cluster informations in Users Secrets
 
+You need to go to `src/PathPaver.Web/` and run the following commands with the correct values.
+
 ```sh
 dotnet user-secrets set "MongoCluster:ConnectionURI" "$THE_MONGODB_URI"
 dotnet user-secrets set "MongoCluster:DatabaseName" "$THE_DATABASE_NAME"
+dotnet user-secrets set "FrontendUrl" "http://localhost:3000"
 ```
 
 ## Domain Layer

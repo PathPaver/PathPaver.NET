@@ -13,7 +13,10 @@ var builder = WebApplication.CreateBuilder(args);
 
 #region Services
 
-builder.Configuration.AddUserSecrets<Program>();
+if (builder.Environment.IsDevelopment())
+{
+    builder.Configuration.AddUserSecrets<Program>();
+}
 
 // To handle UserSecrets content for atlas cluster in DbSettings.cs file
 builder.Configuration.GetSection("MongoCluster").Get<DbSettings>();
@@ -24,15 +27,15 @@ builder.Services.AddScoped<UserService>();
 
 // PredictionEnginePool AKA the model that will predict our rent prices
 builder.Services.AddPredictionEnginePool<ApartmentInput, ApartmentOutput>()
-    .FromFile(modelName: "RentPricePredictor", filePath: "../PathPaver.ML/Model/TheSavedModelFile", watchForChanges: true);
+    .FromFile(modelName: "RentPricePredictor", filePath: "../PathPaver.ML/Model/TheSavedModelFile",
+        watchForChanges: true);
 
 
 // Default configuration for Authentication
 builder.Services.AddAuthentication(auth =>
 {
     auth.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-    auth.DefaultChallengeScheme    = JwtBearerDefaults.AuthenticationScheme;
-    
+    auth.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
 }).AddJwtBearer(jwt => // Perform auth by extracting and valid JWT token from 'Authorization' header
 {
     jwt.RequireHttpsMetadata = false; // Will work with HTTP
@@ -41,9 +44,9 @@ builder.Services.AddAuthentication(auth =>
     {
         // Key used in signature
         IssuerSigningKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(AuthSettings.PrivateKey)),
-        
+
         ValidateIssuer = false,
-        ValidateAudience = false 
+        ValidateAudience = false
     };
 });
 
@@ -51,14 +54,13 @@ builder.Services.AddAuthorization();
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
-
 #endregion
 
 var app = builder.Build();
 
 /*
  * Security Middleware for authorizations
- * 
+ *
  * - Authentication related stuff should go here
  */
 
@@ -66,6 +68,13 @@ var app = builder.Build();
 
 app.UseAuthentication();
 app.UseAuthorization();
+app.UseCors(policyBuilder =>
+{
+    policyBuilder.WithOrigins(builder.Configuration["FrontendUrl"]!)
+        .AllowAnyMethod()
+        .AllowAnyHeader()
+        .AllowCredentials();
+});
 
 #endregion
 
@@ -78,10 +87,10 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+
 #endregion
 
 // To add endpoints for created controllers
 app.MapControllers();
 
 app.Run();
-
