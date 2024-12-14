@@ -25,6 +25,7 @@ public class BaseRepository<T> : IBaseRepository<T> where T : BaseEntity // Forc
         var dbContextOptions = new DbContextOptionsBuilder<UserDbContext>()
             .UseMongoDB(client, DbSettings.DatabaseName);
         
+        
         // Here it basically just focus on the UserDBContext. It should be changed in the futur
         _context = new UserDbContext(dbContextOptions.Options);
     }
