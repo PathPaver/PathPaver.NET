@@ -7,10 +7,9 @@ using PathPaver.Domain.Entities;
 namespace PathPaver.Web.Controllers;
 
 [ApiController]
-[Route("api/v1/users")]
+[Route("/api/v1/users")]
 public class UserController(UserService userService) : ControllerBase
 {
-    
     [HttpGet("{email}")]
     public IActionResult GetByEmail(string email)
     {

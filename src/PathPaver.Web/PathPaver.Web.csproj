@@ -14,7 +14,9 @@
     </ItemGroup>
 
     <ItemGroup>
+      <ProjectReference Include="..\..\PathPaver.ML\PathPaver.ML.csproj" />
       <ProjectReference Include="..\PathPaver.Application\PathPaver.Application.csproj" />
+      <ProjectReference Include="..\PathPaver.ML\PathPaver.ML.csproj" />
       <ProjectReference Include="..\PathPaver.Persistence\PathPaver.Persistence.csproj" />
     </ItemGroup>
 

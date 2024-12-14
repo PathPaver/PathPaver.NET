@@ -1,7 +1,8 @@
+using Microsoft.Extensions.ML;
 using PathPaver.Application.Repository.Entities;
 using PathPaver.Application.Services.Auth;
 using PathPaver.Application.Services.Entities;
-using PathPaver.Domain.Entities;
+using PathPaver.ML;
 using PathPaver.Persistence;
 using PathPaver.Persistence.Repository.Entities;
 
@@ -16,6 +17,10 @@ builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<AuthService>();
 builder.Services.AddScoped<UserService>();
 
+// PredictionEnginePool AKA the model that will predict our rent prices
+builder.Services.AddPredictionEnginePool<ApartmentInput, ApartmentOutput>()
+    .FromFile(modelName: "RentPricePredictor", filePath: "../PathPaver.ML/Model/", watchForChanges: true);
+
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
@@ -28,7 +33,6 @@ var app = builder.Build();
  * Security Middleware for authorizations
  */
 #region Security
-
 
 // Authentication related stuff should go here
 
