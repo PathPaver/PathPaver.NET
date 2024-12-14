@@ -8,9 +8,9 @@ namespace PathPaver.Domain.Common;
  */
 public abstract class BaseEntity
 {
-    [Key] 
+    [Key]
     [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-    protected static long Id { get; set; }
-    protected DateTimeOffset DateCreated { get; set; } = DateTimeOffset.Now;
-    protected bool IsVisible { get; set; } = false;
+    public string? Id { get; set; }
+    public DateTimeOffset DateCreated { get; set; } = DateTimeOffset.Now;
+    public bool IsVisible { get; set; } = false;
 }
