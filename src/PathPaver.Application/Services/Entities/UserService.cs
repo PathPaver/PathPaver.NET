@@ -15,9 +15,9 @@ public class UserService(IUserRepository userRepository)
         userRepository.Create(inst);
     }
 
-    public void Delete(string username)
+    public void Delete(string email)
     {
-        userRepository.Delete(username);
+        userRepository.Delete(email);
     }
 
     public void Update(long id, User inst)
