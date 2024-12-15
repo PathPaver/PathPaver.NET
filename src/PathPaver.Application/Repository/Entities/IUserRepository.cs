@@ -15,5 +15,5 @@ namespace PathPaver.Application.Repository.Entities;
  */
 public interface IUserRepository : IBaseRepository<User>
 {
-    User GetByEmail(string email);
+    User? GetByEmail(string email);
 }

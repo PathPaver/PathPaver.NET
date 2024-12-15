@@ -15,11 +15,13 @@ public class AuthController(AuthService authService, UserService userService) : 
     public IActionResult LoginUser(AuthUserDto authUserDto)
     {
         var user = userService.GetByEmail(authUserDto.Email);
+
+        if (user == null || !authService.CompareHash(user.Password, authUserDto.Password))
+        {
+            return Unauthorized(new ApiResponse("Invalid email or password."));
+        }
         
-        if (authService.CompareHash(user.Password, authUserDto.Password))
-            return Ok(authService.GenerateToken(user));
-        
-        return Unauthorized("Wrong information");
+        return Ok(new TokenDto(authService.GenerateToken(user)));
     }
 
     [HttpPost("signup")]
@@ -33,7 +35,7 @@ public class AuthController(AuthService authService, UserService userService) : 
                 email:    userDto.Email,
                 roles:    [nameof(Role.User)])
             );
-            return Ok("User account was created successfully");
+            return Ok(new ApiResponse("User account was created successfully"));
         }
         catch (Exception e)
         {
