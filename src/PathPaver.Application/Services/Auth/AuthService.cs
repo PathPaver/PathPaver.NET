@@ -9,34 +9,39 @@ namespace PathPaver.Application.Services.Auth
 {
     public class AuthService(IUserRepository userRepository)
     {
+        #region Class Fields
+
+        private readonly JwtSecurityTokenHandler _tokenHandler = new();
+        
+        private readonly TokenValidationParameters _validationParameters = AuthSettings.GetTokenValidationParameters();
+
+        private readonly SigningCredentials _credentials = new(
+            new SymmetricSecurityKey(AuthSettings.GetKeyBytes()),
+            SecurityAlgorithms.HmacSha256Signature
+        );
+        #endregion
+
         #region Password Related
 
-        public static string HashString(string toHash) => 
+        public static string HashString(string toHash) =>
             BCrypt.Net.BCrypt.EnhancedHashPassword(toHash);
 
-        public static bool CompareHash(string hashed, string toHash) => 
+        public static bool CompareHash(string hashed, string toHash) =>
             BCrypt.Net.BCrypt.EnhancedVerify(toHash, hashed);
-        
+
         #endregion
 
         #region JWT Related
 
         public string GenerateToken(User user)
         {
-            var tokenHandler = new JwtSecurityTokenHandler();
-            var key = Encoding.ASCII.GetBytes(AuthSettings.PrivateKey);
-            
-            var credentials = new SigningCredentials(
-                new SymmetricSecurityKey(key),
-                SecurityAlgorithms.HmacSha256Signature); // Create signing hash with secret key
-
             var tokenSettings = new SecurityTokenDescriptor
             {
                 Subject = GenerateTokenSettings(user),
                 Expires = DateTime.UtcNow.AddHours(1), // Expire in 1 hour after created
-                SigningCredentials = credentials
+                SigningCredentials = _credentials
             };
-            return tokenHandler.WriteToken(tokenHandler.CreateToken(tokenSettings));
+            return _tokenHandler.WriteToken(_tokenHandler.CreateToken(tokenSettings));
         }
 
         private static ClaimsIdentity GenerateTokenSettings(User user) // Generate payload of token
@@ -49,11 +54,9 @@ namespace PathPaver.Application.Services.Auth
 
         public bool IsTokenValid(string token)
         {
-            var tokenHandler = new JwtSecurityTokenHandler();
-
             try
             {
-                tokenHandler.ValidateToken(token, AuthSettings.GetTokenValidationParameters(), out var validatedToken);
+                _tokenHandler.ValidateToken(token, _validationParameters, out var validatedToken);
                 var email = ((JwtSecurityToken)validatedToken).Claims.First(x => x.Type == "email").Value;
                 var user = userRepository.GetByEmail(email);
                 return user != null;
@@ -63,6 +66,7 @@ namespace PathPaver.Application.Services.Auth
                 return false;
             }
         }
+
         #endregion
     }
 }
