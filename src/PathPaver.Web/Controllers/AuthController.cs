@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
+using MongoDB.Bson;
 using PathPaver.Application.DTOs;
 using PathPaver.Application.Services.Auth;
 using PathPaver.Application.Services.Entities;
@@ -39,8 +40,12 @@ public class AuthController(AuthService authService, UserService userService) : 
         }
         catch (Exception e)
         {
-            Console.WriteLine(e);
-            throw;
+            if (e.Message.Contains("DuplicateKey") && e.Message.Contains("Email"))
+            {
+                return BadRequest(new ApiResponse("Email already exists."));
+            }
+            
+            return Problem("Internal Server Error.");
         }
     }
 }
