@@ -1,12 +1,15 @@
 using System.Text;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.ML;
 using Microsoft.IdentityModel.Tokens;
+using MongoDB.Driver;
 using PathPaver.Application.Repository.Entities;
 using PathPaver.Application.Services.Auth;
 using PathPaver.Application.Services.Entities;
 using PathPaver.ML;
 using PathPaver.Persistence;
+using PathPaver.Persistence.Context;
 using PathPaver.Persistence.Repository.Entities;
 using Serilog;
 
@@ -39,6 +42,14 @@ builder.Configuration
     .GetSection("Security")
     .Get<AuthSettings>();
 
+#endregion
+
+#region DBContext
+
+builder.Services.AddDbContext<UserDbContext>(options =>
+{
+    options.UseMongoDB(new MongoClient(DbSettings.ConnectionURI), DbSettings.DatabaseName);
+});
 #endregion
 
 #region Scoped Services
