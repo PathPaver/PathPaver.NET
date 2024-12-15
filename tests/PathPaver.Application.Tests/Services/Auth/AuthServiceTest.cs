@@ -1,14 +1,14 @@
-namespace PathPaver.Web.Tests.Controllers;
- 
+namespace PathPaver.Application.Tests.Services.Auth;
+
 [TestFixture]
-public class AuthControllerTest
+public class AuthServiceTest
 {
     [SetUp]
     public void SetUp()
     {
         
     }
-
+    
     [TearDown]
     public void TearDown()
     {
