@@ -15,21 +15,15 @@ public class UserController(
     [ProducesResponseType<int>(StatusCodes.Status404NotFound)]
     public IActionResult GetByEmail(string email)
     {
-        try
-        {
-            var u = userService.GetByEmail(email);
+        var u = userService.GetByEmail(email);
             
-            logger.LogWarning("Information report has been retrieved for user {Email}", email);
+        logger.LogWarning("Information report has been retrieved for user {Email}", email);
 
-            if (u is null)
-                throw new Exception("User not found.");
-            else
-                return Ok(new UserDto(u.Email));
-        }
-        catch (Exception e)
+        if (u is null)
         {
-            logger.LogError(e, "Tried to Get user info of {Email} but failed. User doesn't seem to exist", email);
+            logger.LogError(new Exception($"User with email {email} not found."), "Tried to Get user info of {Email} but failed. User doesn't seem to exist", email);
             return NotFound(new ApiResponse(new UserNotFoundException(email).Message));
-        }        
+        }
+        return Ok(new UserDto(u.Email));
     }
 }
