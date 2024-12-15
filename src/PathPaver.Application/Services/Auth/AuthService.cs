@@ -46,10 +46,11 @@ namespace PathPaver.Application.Services.Auth
 
         private static ClaimsIdentity GenerateTokenSettings(User user) // Generate payload of token
         {
-            return new ClaimsIdentity(
-            [
+            return new ClaimsIdentity(new []
+            {
                 new Claim(ClaimTypes.Email, user.Email)
-            ]);
+                
+            }.Concat(user.Roles.Select(r => new Claim(ClaimTypes.Role, r))));
         }
 
         public bool IsTokenValid(string token)
