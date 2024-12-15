@@ -22,7 +22,7 @@ public class AuthController(AuthService authService, UserService userService) : 
         return BadRequest(new ApiResponse("Invalid token."));
     }
 
-[HttpPost("login")]
+    [HttpPost("login")]
     [ProducesResponseType<int>(StatusCodes.Status200OK)]
     [ProducesResponseType<int>(StatusCodes.Status401Unauthorized)]
     public IActionResult LoginUser(AuthUserDto authUserDto)
