@@ -42,7 +42,6 @@ namespace PathPaver.Application.Services.Auth
         {
             return new ClaimsIdentity(
             [
-                new Claim(ClaimTypes.Name, user.Username),
                 new Claim(ClaimTypes.Email, user.Email)
             ]);
         }
