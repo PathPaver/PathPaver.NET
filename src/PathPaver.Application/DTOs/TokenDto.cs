@@ -1,3 +1,3 @@
 namespace PathPaver.Application.DTOs;
 
-public record TokenDto(String Token);
+public record TokenDto(string Token);
