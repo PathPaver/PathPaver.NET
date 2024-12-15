@@ -11,7 +11,18 @@ namespace PathPaver.Web.Controllers;
 [Route("/api/v1/auth")]
 public class AuthController(AuthService authService, UserService userService) : ControllerBase
 {
-    [HttpPost("login")]
+    [HttpGet("verify-token")]
+    public IActionResult VerifyToken(string token)
+    {
+        if (authService.IsTokenValid(token))
+        {
+            return Ok(new ApiResponse("Token is valid."));
+        }
+        
+        return BadRequest(new ApiResponse("Invalid token."));
+    }
+
+[HttpPost("login")]
     [ProducesResponseType<int>(StatusCodes.Status200OK)]
     [ProducesResponseType<int>(StatusCodes.Status401Unauthorized)]
     public IActionResult LoginUser(AuthUserDto authUserDto)

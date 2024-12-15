@@ -3,10 +3,11 @@ using System.Security.Claims;
 using PathPaver.Domain.Entities;
 using System.IdentityModel.Tokens.Jwt;
 using System.Text;
+using PathPaver.Application.Repository.Entities;
 
 namespace PathPaver.Application.Services.Auth
 {
-    public class AuthService
+    public class AuthService(IUserRepository userRepository)
     {
         #region Password Related
 
@@ -44,6 +45,23 @@ namespace PathPaver.Application.Services.Auth
             [
                 new Claim(ClaimTypes.Email, user.Email)
             ]);
+        }
+
+        public bool IsTokenValid(string token)
+        {
+            var tokenHandler = new JwtSecurityTokenHandler();
+
+            try
+            {
+                tokenHandler.ValidateToken(token, AuthSettings.GetTokenValidationParameters(), out var validatedToken);
+                var email = ((JwtSecurityToken)validatedToken).Claims.First(x => x.Type == "email").Value;
+                var user = userRepository.GetByEmail(email);
+                return user != null;
+            }
+            catch
+            {
+                return false;
+            }
         }
         #endregion
     }
