@@ -12,6 +12,7 @@ public class UserController(
 {
     [HttpGet("{email}")]
     [ProducesResponseType<int>(StatusCodes.Status200OK)]
+    [ProducesResponseType<int>(StatusCodes.Status404NotFound)]
     public IActionResult GetByEmail(string email)
     {
         try

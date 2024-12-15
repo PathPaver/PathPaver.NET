@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
+using PathPaver.Application.Common.Exceptions.Entities;
 using PathPaver.Application.DTOs;
 using PathPaver.Application.Services.Auth;
 using PathPaver.Application.Services.Entities;
@@ -13,6 +14,7 @@ public class AuthController(AuthService authService, UserService userService) : 
 {
     [HttpPost("login")]
     [ProducesResponseType<int>(StatusCodes.Status200OK)]
+    [ProducesResponseType<int>(StatusCodes.Status401Unauthorized)]
     public IActionResult LoginUser(AuthUserDto authUserDto)
     {
         var user = userService.GetByEmail(authUserDto.Email);
@@ -26,6 +28,7 @@ public class AuthController(AuthService authService, UserService userService) : 
 
     [HttpPost("signup")]
     [ProducesResponseType<int>(StatusCodes.Status200OK)]
+    [ProducesResponseType<int>(StatusCodes.Status400BadRequest)]
     public IActionResult SignupUser(SignupUserDto userDto)
     {
         try
@@ -40,8 +43,7 @@ public class AuthController(AuthService authService, UserService userService) : 
         }
         catch (Exception e)
         {
-            Console.WriteLine(e);
-            throw;
+            return BadRequest(new ApiResponse(new UserAlreadyExistException().Message));
         }
     }
 }
