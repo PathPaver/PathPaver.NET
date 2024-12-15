@@ -34,7 +34,6 @@ public class AuthController(AuthService authService, UserService userService) : 
         try
         {
             userService.Create(new User(
-                username: userDto.Username,
                 password: AuthService.HashString(userDto.Password),
                 email:    userDto.Email,
                 roles:    [nameof(Role.User)])

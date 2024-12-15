@@ -21,12 +21,12 @@ public class UserController(
             
             logger.LogWarning("Information report has been retrieved for user {Email}", email);
             
-            return Ok(new UserDto(u.Username, u.Email));
+            return Ok(new UserDto(u.Email));
         }
         catch (Exception e)
         {
             logger.LogError(e, "Tried to Get user info of {Email} but failed", email);
-            throw new UserNotFoundException(email, e.Message);
+            return NotFound(new ApiResponse(new UserNotFoundException(email).Message));
         }        
     }
 }
