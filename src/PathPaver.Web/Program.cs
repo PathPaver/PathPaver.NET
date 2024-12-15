@@ -46,9 +46,11 @@ builder.Configuration
 
 #region DBContext
 
+var clientConnection = new MongoClient(DbSettings.ConnectionURI);
+
 builder.Services.AddDbContext<UserDbContext>(options =>
 {
-    options.UseMongoDB(new MongoClient(DbSettings.ConnectionURI), DbSettings.DatabaseName);
+    options.UseMongoDB(clientConnection, DbSettings.DatabaseName);
 });
 #endregion
 
