@@ -1,7 +1,5 @@
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
 using MongoDB.Driver;
-using PathPaver.Application.Common.Exceptions.Entities;
 using PathPaver.Application.Repository;
 using PathPaver.Domain.Common;
 using PathPaver.Persistence.Context;
@@ -13,18 +11,17 @@ public class BaseRepository<T> : IBaseRepository<T> where T : BaseEntity // Forc
     #region Members
     
     protected readonly UserDbContext _context;
+    
     #endregion
 
     #region Constructors
 
     protected BaseRepository()
     {
-        var client = new MongoClient(MongoClientSettings
-            .FromConnectionString(DbSettings.ConnectionURI));
+        var client = new MongoClient(DbSettings.ConnectionURI);
         
         var dbContextOptions = new DbContextOptionsBuilder<UserDbContext>()
             .UseMongoDB(client, DbSettings.DatabaseName);
-        
         
         // Here it basically just focus on the UserDBContext. It should be changed in the futur
         _context = new UserDbContext(dbContextOptions.Options);

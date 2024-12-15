@@ -10,10 +10,10 @@ namespace PathPaver.Application.Services.Auth
     {
         #region Password Related
 
-        public string HashString(string toHash) => 
+        public static string HashString(string toHash) => 
             BCrypt.Net.BCrypt.EnhancedHashPassword(toHash);
 
-        public bool CompareHash(string hashed, string toHash) => 
+        public static bool CompareHash(string hashed, string toHash) => 
             BCrypt.Net.BCrypt.EnhancedVerify(toHash, hashed);
         
         #endregion

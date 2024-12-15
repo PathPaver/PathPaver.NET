@@ -1,5 +1,4 @@
 using Microsoft.AspNetCore.Mvc;
-using MongoDB.Bson;
 using PathPaver.Application.DTOs;
 using PathPaver.Application.Services.Auth;
 using PathPaver.Application.Services.Entities;
@@ -13,11 +12,13 @@ namespace PathPaver.Web.Controllers;
 public class AuthController(AuthService authService, UserService userService) : ControllerBase
 {
     [HttpPost("login")]
+    [ProducesResponseType<int>(StatusCodes.Status200OK)]
+    [ProducesResponseType<int>(StatusCodes.Status401Unauthorized)]
     public IActionResult LoginUser(AuthUserDto authUserDto)
     {
         var user = userService.GetByEmail(authUserDto.Email);
 
-        if (user == null || !authService.CompareHash(user.Password, authUserDto.Password))
+        if (user is null || !AuthService.CompareHash(user.Password, authUserDto.Password))
         {
             return Unauthorized(new ApiResponse("Invalid email or password."));
         }
@@ -26,13 +27,15 @@ public class AuthController(AuthService authService, UserService userService) : 
     }
 
     [HttpPost("signup")]
+    [ProducesResponseType<int>(StatusCodes.Status200OK)]
+    [ProducesResponseType<int>(StatusCodes.Status400BadRequest)]
     public IActionResult SignupUser(SignupUserDto userDto)
     {
         try
         {
             userService.Create(new User(
                 username: userDto.Username,
-                password: authService.HashString(userDto.Password),
+                password: AuthService.HashString(userDto.Password),
                 email:    userDto.Email,
                 roles:    [nameof(Role.User)])
             );

@@ -1,3 +1,3 @@
 namespace PathPaver.Application.DTOs;
 
-public record ApiResponse(string Message);
+public record ApiResponse(string Message) { }

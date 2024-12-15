@@ -5,11 +5,9 @@ using PathPaver.Domain.Entities;
 
 namespace PathPaver.Persistence.Context;
 
-public class UserDbContext : DbContext
+public class UserDbContext(DbContextOptions options) : DbContext(options)
 {
     public DbSet<User> Users { get; init; }
-
-    public UserDbContext(DbContextOptions options) : base(options) { }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
