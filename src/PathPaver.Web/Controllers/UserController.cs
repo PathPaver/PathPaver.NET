@@ -19,7 +19,7 @@ public class UserController(
             
             logger.LogWarning($"Information report has been retrieved for user {email}");
             
-            return Ok(new UserDto(u.Username, u.Biography));
+            return Ok(new UserDto(u.Username, u.Email));
         }
         catch (Exception e)
         {
