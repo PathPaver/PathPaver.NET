@@ -69,14 +69,7 @@ builder.Services.AddAuthentication(auth =>
 {
     jwt.RequireHttpsMetadata = false; // Will work with HTTP
     jwt.SaveToken = false; // Token will not be saved in AuthenticationProperties 
-    jwt.TokenValidationParameters = new TokenValidationParameters
-    {
-        // Key used in signature
-        IssuerSigningKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(AuthSettings.PrivateKey)),
-
-        ValidateIssuer = false,
-        ValidateAudience = false
-    };
+    jwt.TokenValidationParameters = AuthSettings.GetTokenValidationParameters();
 });
 
 #endregion
