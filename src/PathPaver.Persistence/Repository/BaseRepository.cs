@@ -37,14 +37,12 @@ public class BaseRepository<T> : IBaseRepository<T> where T : BaseEntity // Forc
 
     public virtual void Create(T inst)
     {
-        _context.Add(inst)
-            .Context.SaveChanges();
+        _context.Add(inst).Context.SaveChanges();
     }
 
     public virtual void Delete(string name)
     {
-        _context.Remove(Get(name))
-            .Context.SaveChanges();
+        _context.Remove(Get(name)).Context.SaveChanges();
     }
     
     public virtual void Update(string name, T newInst)
