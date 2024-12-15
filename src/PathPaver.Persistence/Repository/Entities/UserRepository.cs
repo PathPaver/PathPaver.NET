@@ -15,11 +15,16 @@ public sealed class UserRepository() : BaseRepository<User>, IUserRepository
     public override void Update(string name, User updatedUser)
     {
         var toUpdateUser = GetByEmail(name);
+
+        if (toUpdateUser != null)
+        {
+            toUpdateUser.Email = updatedUser.Email;
+            toUpdateUser.Password = updatedUser.Password;
+        } 
         
-        toUpdateUser.Username = updatedUser.Username;
-        // still need to update everything else
-        
+#pragma warning disable CS8634 // The type cannot be used as type parameter in the generic type or method. Nullability of type argument doesn't match 'class' constraint.
         _context.Update(toUpdateUser);
+#pragma warning restore CS8634 // The type cannot be used as type parameter in the generic type or method. Nullability of type argument doesn't match 'class' constraint.
     }
 
     #endregion
