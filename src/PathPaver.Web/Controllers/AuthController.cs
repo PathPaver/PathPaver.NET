@@ -18,7 +18,7 @@ public class AuthController(AuthService authService, UserService userService) : 
 
         if (user == null || !authService.CompareHash(user.Password, authUserDto.Password))
         {
-            return Unauthorized("Invalid email or password.");
+            return Unauthorized(new ApiResponse("Invalid email or password."));
         }
         
         return Ok(new TokenDto(authService.GenerateToken(user)));
@@ -35,7 +35,7 @@ public class AuthController(AuthService authService, UserService userService) : 
                 email:    userDto.Email,
                 roles:    [nameof(Role.User)])
             );
-            return Ok("User account was created successfully");
+            return Ok(new ApiResponse("User account was created successfully"));
         }
         catch (Exception e)
         {
