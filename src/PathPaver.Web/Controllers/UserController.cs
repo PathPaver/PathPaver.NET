@@ -11,19 +11,20 @@ public class UserController(
     UserService userService, ILogger<UserController> logger) : ControllerBase
 {
     [HttpGet("{email}")]
+    [ProducesResponseType<int>(StatusCodes.Status200OK)]
     public IActionResult GetByEmail(string email)
     {
         try
         {
             var u = userService.GetByEmail(email);
             
-            logger.LogWarning($"Information report has been retrieved for user {email}");
+            logger.LogWarning("Information report has been retrieved for user {Email}", email);
             
             return Ok(new UserDto(u.Username, u.Email));
         }
         catch (Exception e)
         {
-            logger.LogError($"Tried to Get user info of ${email} but failed");
+            logger.LogError(e, "Tried to Get user info of {Email} but failed", email);
             throw new UserNotFoundException(email, e.Message);
         }        
     }

@@ -12,26 +12,27 @@ namespace PathPaver.Web.Controllers;
 public class AuthController(AuthService authService, UserService userService) : ControllerBase
 {
     [HttpPost("login")]
+    [ProducesResponseType<int>(StatusCodes.Status200OK)]
     public IActionResult LoginUser(AuthUserDto authUserDto)
     {
         var user = userService.GetByEmail(authUserDto.Email);
 
-        if (user == null || !authService.CompareHash(user.Password, authUserDto.Password))
+        if (user is null || !AuthService.CompareHash(user.Password, authUserDto.Password))
         {
             return Unauthorized(new ApiResponse("Invalid email or password."));
         }
-        
         return Ok(new TokenDto(authService.GenerateToken(user)));
     }
 
     [HttpPost("signup")]
+    [ProducesResponseType<int>(StatusCodes.Status200OK)]
     public IActionResult SignupUser(SignupUserDto userDto)
     {
         try
         {
             userService.Create(new User(
                 username: userDto.Username,
-                password: authService.HashString(userDto.Password),
+                password: AuthService.HashString(userDto.Password),
                 email:    userDto.Email,
                 roles:    [nameof(Role.User)])
             );
