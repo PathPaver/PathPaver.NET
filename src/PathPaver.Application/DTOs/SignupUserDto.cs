@@ -5,4 +5,4 @@ namespace PathPaver.Application.DTOs;
  *
  * Used in route : api/v1/auth/signup
  */
-public record SignupUserDto(string Username, string Email, string Password);
+public record SignupUserDto(string Email, string Password);
