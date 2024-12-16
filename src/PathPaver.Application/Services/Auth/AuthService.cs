@@ -12,6 +12,7 @@ namespace PathPaver.Application.Services.Auth
         #region Class Fields
 
         private readonly JwtSecurityTokenHandler _tokenHandler = new();
+        
         private readonly TokenValidationParameters _validationParameters = AuthSettings.GetTokenValidationParameters();
 
         private readonly SigningCredentials _credentials = new(
@@ -19,7 +20,7 @@ namespace PathPaver.Application.Services.Auth
             SecurityAlgorithms.HmacSha256Signature
         );
         #endregion
-        
+
         #region Password Related
 
         public static string HashString(string toHash) =>
