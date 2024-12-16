@@ -7,10 +7,8 @@ namespace PathPaver.Application.Services.Auth {
     {
         public static string? PrivateKey { get; set; }
 
-        public static byte[] GetKeyBytes()
-        {
-            return Encoding.ASCII.GetBytes(PrivateKey);
-        }
+        public static byte[] GetKeyBytes() =>
+            Encoding.ASCII.GetBytes(PrivateKey!);
         
         public static TokenValidationParameters GetTokenValidationParameters()
         {

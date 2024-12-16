@@ -12,7 +12,6 @@ namespace PathPaver.Application.Services.Auth
         #region Class Fields
 
         private readonly JwtSecurityTokenHandler _tokenHandler = new();
-        
         private readonly TokenValidationParameters _validationParameters = AuthSettings.GetTokenValidationParameters();
 
         private readonly SigningCredentials _credentials = new(
@@ -20,7 +19,7 @@ namespace PathPaver.Application.Services.Auth
             SecurityAlgorithms.HmacSha256Signature
         );
         #endregion
-
+        
         #region Password Related
 
         public static string HashString(string toHash) =>
@@ -46,10 +45,10 @@ namespace PathPaver.Application.Services.Auth
 
         private static ClaimsIdentity GenerateTokenSettings(User user) // Generate payload of token
         {
-            return new ClaimsIdentity(
-            [
+            return new ClaimsIdentity(new[]
+            {
                 new Claim(ClaimTypes.Email, user.Email)
-            ]);
+            }.Concat(user.Roles.Select(r => new Claim(ClaimTypes.Role, r))));
         }
 
         public bool IsTokenValid(string token)
@@ -57,7 +56,7 @@ namespace PathPaver.Application.Services.Auth
             try
             {
                 _tokenHandler.ValidateToken(token, _validationParameters, out var validatedToken);
-                var email = ((JwtSecurityToken)validatedToken).Claims.First(x => x.Type == "email").Value;
+                var email = ((JwtSecurityToken)validatedToken).Claims.First(c => c.Type == "email").Value;
                 var user = userRepository.GetByEmail(email);
                 return user != null;
             }
