@@ -18,9 +18,7 @@ public class AuthController(AuthService authService, UserService userService) : 
     public IActionResult VerifyToken(string token)
     {
         if (authService.IsTokenValid(token))
-        {
             return Ok(new ApiResponse("Token is valid."));
-        }
         
         return BadRequest(new ApiResponse("Invalid token."));
     }
@@ -33,9 +31,7 @@ public class AuthController(AuthService authService, UserService userService) : 
         var user = userService.GetByEmail(authUserDto.Email);
 
         if (user is null || !AuthService.CompareHash(user.Password, authUserDto.Password))
-        {
             return Unauthorized(new ApiResponse("Invalid email or password."));
-        }
         
         return Ok(new TokenDto(authService.GenerateToken(user)));
     }
