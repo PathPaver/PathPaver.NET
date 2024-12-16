@@ -4,7 +4,6 @@ using PathPaver.Application.Services.Auth;
 using PathPaver.Application.Services.Entities;
 using PathPaver.Domain.Entities;
 using PathPaver.Domain.Entities.Enum;
-using System.Diagnostics;
 
 namespace PathPaver.Web.Controllers;
 
