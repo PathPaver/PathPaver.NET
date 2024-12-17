@@ -59,8 +59,10 @@ builder.Services.AddDbContext<AppDbContext>(options =>
 #region Scoped Services
 
 builder.Services.AddScoped<IUserRepository, UserRepository>();
+builder.Services.AddScoped<IRentPredictionRepository, RentPredictionRepository>();
 builder.Services.AddScoped<AuthService>();
 builder.Services.AddScoped<UserService>();
+builder.Services.AddScoped<RentPredictionService>();
 
 #endregion
 
