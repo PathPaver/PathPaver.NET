@@ -14,7 +14,9 @@ public class AuthServiceTest
     private JwtSecurityTokenHandler _tokenHandler;
     private User _fakeUser;
     private AuthService _authService;
-    
+
+    #region Setup & Teardown
+
     [SetUp]
     public void SetUp()
     {
@@ -22,13 +24,12 @@ public class AuthServiceTest
 
         _tokenHandler = new JwtSecurityTokenHandler();
         
-        _authService = new AuthService(
-            new Mock<IUserRepository>().Object);
-        
         _fakeUser = new User(
             "mock@gmail.com", 
             "mock123", 
             [nameof(Role.User)]);
+        
+        _authService = new AuthService(new Mock<IUserRepository>().Object);
     }
     
     [TearDown]
@@ -37,6 +38,10 @@ public class AuthServiceTest
         _authService = null!;
         _fakeUser = null!;
     }
+    
+    #endregion
+
+    #region GenerateToken Tests
 
     [Test]
     public void GenerateToken_withUser_ReturnJWT()
@@ -46,10 +51,11 @@ public class AuthServiceTest
         Assert.Multiple(() =>
         {
             Assert.That(token, Is.Not.Null);
-            
             Assert.That(_tokenHandler.ReadJwtToken(token)
                 .Claims.First()
                 .Value, Is.EqualTo(_fakeUser.Email));
         });
     }
+    
+    #endregion
 }
