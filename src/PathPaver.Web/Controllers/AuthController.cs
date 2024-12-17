@@ -12,6 +12,8 @@ namespace PathPaver.Web.Controllers;
 public class AuthController(AuthService authService, UserService userService) : ControllerBase
 {
     [HttpGet("verify-token")]
+    [ProducesResponseType<int>(StatusCodes.Status200OK)]
+    [ProducesResponseType<int>(StatusCodes.Status400BadRequest)]
     public IActionResult VerifyToken(string token)
     {
         if (authService.IsTokenValid(token))

@@ -12,5 +12,5 @@ public abstract class BaseEntity
     [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
     public string? Id { get; set; }
     public DateTimeOffset DateCreated { get; set; } = DateTimeOffset.Now;
-    public bool IsVisible { get; set; } = false;
+    public bool IsVisible { get; set; } = true;
 }

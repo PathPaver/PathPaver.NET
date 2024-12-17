@@ -19,11 +19,10 @@ public class UserController(
             
         logger.LogWarning("Information report has been retrieved for user {Email}", email);
 
-        if (u is null)
-        {
-            logger.LogError(new Exception($"User with email {email} not found."), "Tried to Get user info of {Email} but failed. User doesn't seem to exist", email);
-            return NotFound(new ApiResponse(new UserNotFoundException(email).Message));
-        }
-        return Ok(new UserDto(u.Email));
+        if (u != null) 
+            return Ok(new UserDto(u.Email));
+        
+        logger.LogError(new Exception($"User with email {email} not found."), "Tried to Get user info of {Email} but failed. User doesn't seem to exist", email);
+        return NotFound(new ApiResponse(new UserNotFoundException(email).Message));
     }
 }
