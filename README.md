@@ -42,3 +42,9 @@ The project contains the infrastructure layer, including the implementation of d
 ## Presentation Layer
 
 The main project contains the presentation layer and implements the ASP.NET Core web API. It should reference the Application and Infrastructure projects.
+
+## Stress Tests
+
+This project uses a tool called artillery to run stress tests on our website. 
+
+First things first, create a folder called "test-data", then add a json file called "login.json" inside the folder. This will be used by the stress test script to generate a valid token.
