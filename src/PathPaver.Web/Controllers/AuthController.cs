@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.IdentityModel.Tokens;
 using PathPaver.Application.DTOs;
 using PathPaver.Application.Services.Auth;
 using PathPaver.Application.Services.Entities;
@@ -16,8 +17,14 @@ public class AuthController(AuthService authService, UserService userService) : 
     [ProducesResponseType<int>(StatusCodes.Status400BadRequest)]
     public IActionResult VerifyToken(string token)
     {
-        if (authService.IsTokenValid(token))
-            return Ok(new ApiResponse("Token is valid."));
+        var email = authService.GetEmailByToken(token);
+
+        if (!email.IsNullOrEmpty())
+        {
+            var user = userService.GetByEmail(email);
+            
+            if (user != null) return Ok(new ApiResponse("Token is valid."));
+        }
         
         return BadRequest(new ApiResponse("Invalid token."));
     }
@@ -41,6 +48,7 @@ public class AuthController(AuthService authService, UserService userService) : 
     public IActionResult SignupUser(SignupUserDto userDto)
     {
         var user = userService.GetByEmail(userDto.Email);
+        
         if (user is not null)
             return BadRequest(new ApiResponse("Email already exists."));
             
