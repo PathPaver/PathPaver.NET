@@ -2,7 +2,9 @@ using PathPaver.Domain.Common;
 
 namespace PathPaver.Domain.Entities;
 
-public class GeneratedResult(
+public class RentPrediction(
+    float price,
+    float probability,
     float baths,
     float beds,
     float latitude,
@@ -15,6 +17,8 @@ public class GeneratedResult(
 {
     #region Properties
 
+    public float Price { get; set; } = price;
+    public float Probability { get; set; } = probability;
     public float Baths { get; set; } = baths;
     public float Beds { get; set; } = beds;
     public float Latitude { get; set; } = latitude;
