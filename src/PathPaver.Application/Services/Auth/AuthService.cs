@@ -2,7 +2,6 @@ using Microsoft.IdentityModel.Tokens;
 using System.Security.Claims;
 using PathPaver.Domain.Entities;
 using System.IdentityModel.Tokens.Jwt;
-using System.Text;
 using PathPaver.Application.Repository.Entities;
 
 namespace PathPaver.Application.Services.Auth
@@ -52,21 +51,19 @@ namespace PathPaver.Application.Services.Auth
             }.Concat(user.Roles.Select(r => new Claim(ClaimTypes.Role, r))));
         }
 
-        public bool IsTokenValid(string token)
+        public string? GetEmailByToken(string token)
         {
             try
             {
                 _tokenHandler.ValidateToken(token, _validationParameters, out var validatedToken);
-                var email = ((JwtSecurityToken)validatedToken).Claims.First(c => c.Type == "email").Value;
-                var user = userRepository.GetByEmail(email);
-                return user != null;
+                return ((JwtSecurityToken)validatedToken).Claims.First(c => c.Type == "email").Value;
             }
             catch
             {
-                return false;
+                return null!;
             }
         }
-
+        
         #endregion
     }
 }
