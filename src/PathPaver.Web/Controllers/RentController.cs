@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.ML;
 using PathPaver.Application.DTOs;
+using PathPaver.Application.Services.Entities;
 using PathPaver.Domain.Entities.Enum;
 using PathPaver.ML;
 
@@ -11,7 +12,7 @@ namespace PathPaver.Web.Controllers;
 [ApiController]
 [Route("/api/v1/rents")]
 public class RentController(
-    PredictionEnginePool<ApartmentInput, ApartmentOutput> predictionEnginePool) : ControllerBase
+    PredictionEnginePool<ApartmentInput, ApartmentOutput> predictionEnginePool, RentPredictionService rentPredictionService) : ControllerBase
 {
     private const string GeoDataApiUrl = "https://nominatim.openstreetmap.org/";
 
@@ -24,16 +25,19 @@ public class RentController(
     [HttpPost("predict")]
     [Authorize(Roles =
         nameof(Role.User))] // Need to be authenticated and have the role User to be able to make prediction
-    public async Task<IActionResult> PredictRentPrice(ApartmentInput apartmentInput)
+    public async Task<IActionResult> PredictRentPrice(RentPredictionDto rentPredictionDto)
     {
-        return Ok(
+        //rentPredictionService.Create();
+        
+        /*return Ok(
             await Task.FromResult(predictionEnginePool.Predict
                 (
                     modelName: "RentPricePredictor",
                     apartmentInput // Input 
                 )
             )
-        );
+        );*/
+        return Ok();
     }
 
     /// <summary>
