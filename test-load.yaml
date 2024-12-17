@@ -1,8 +1,18 @@
 config:
   target: 'http://localhost:5231'
   phases:
-    - duration: 6  # Durée du test en secondes
-      arrivalRate: 10  # Requêtes par seconde
+    - name: Slow test
+      duration: 10 
+      arrivalRate: 5 
+    - name: Condensed test
+      duration: 4
+      arrivalRate: 8
+    - name: Slower test
+      duration: 12
+      arrivalRate: 4
+    - name: High-load test
+      duration: 15
+      arrivalRate: 10
   payload:
       # Define the coping file and fields to load
       path: "test-data/token.csv"
