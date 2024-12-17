@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.IdentityModel.Tokens;
 using PathPaver.Application.DTOs;
 using PathPaver.Application.Services.Auth;
 using PathPaver.Application.Services.Entities;
@@ -16,9 +17,13 @@ public class AuthController(AuthService authService, UserService userService) : 
     [ProducesResponseType<int>(StatusCodes.Status400BadRequest)]
     public IActionResult VerifyToken(string token)
     {
-        if (authService.IsTokenValid(token))
+        var email = authService.GetEmailByToken(token);
+
+        if (!email.IsNullOrEmpty())
         {
-            return Ok(new ApiResponse("Token is valid."));
+            var user = userService.GetByEmail(email);
+            
+            if (user != null) return Ok(new ApiResponse("Token is valid."));
         }
         
         return BadRequest(new ApiResponse("Invalid token."));
@@ -32,9 +37,7 @@ public class AuthController(AuthService authService, UserService userService) : 
         var user = userService.GetByEmail(authUserDto.Email);
 
         if (user is null || !AuthService.CompareHash(user.Password, authUserDto.Password))
-        {
             return Unauthorized(new ApiResponse("Invalid email or password."));
-        }
         
         return Ok(new TokenDto(authService.GenerateToken(user)));
     }
@@ -44,23 +47,16 @@ public class AuthController(AuthService authService, UserService userService) : 
     [ProducesResponseType<int>(StatusCodes.Status400BadRequest)]
     public IActionResult SignupUser(SignupUserDto userDto)
     {
-        try
-        {
-            userService.Create(new User(
-                password: AuthService.HashString(userDto.Password),
-                email:    userDto.Email,
-                roles:    [nameof(Role.User)])
-            );
-            return Ok(new ApiResponse("User account was created successfully"));
-        }
-        catch (Exception e)
-        {
-            if (e.Message.Contains("DuplicateKey") && e.Message.Contains("Email"))
-            {
-                return BadRequest(new ApiResponse("Email already exists."));
-            }
+        var user = userService.GetByEmail(userDto.Email);
+        
+        if (user is not null)
+            return BadRequest(new ApiResponse("Email already exists."));
             
-            return Problem("Internal Server Error.");
-        }
+        userService.Create(new User(
+            password: AuthService.HashString(userDto.Password),
+            email: userDto.Email,
+            roles: [nameof(Role.User)])
+        );
+        return Ok(new ApiResponse("User account was created successfully"));
     }
 }
