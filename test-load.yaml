@@ -1,7 +1,7 @@
 config:
   target: 'http://localhost:5231'
   phases:
-    - duration: 5  # Durée du test en secondes
+    - duration: 6  # Durée du test en secondes
       arrivalRate: 10  # Requêtes par seconde
   payload:
       # Define the coping file and fields to load
