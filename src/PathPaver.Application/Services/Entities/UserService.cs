@@ -7,7 +7,10 @@ public class UserService(IUserRepository userRepository)
 {
     public User? GetByEmail(string email)
     {
-        return userRepository.GetByEmail(email);
+        var u = userRepository.GetByEmail(email);
+
+        if (u == null || !u.IsVisible) return null;
+        return u;
     }
 
     public void Create(User inst)
