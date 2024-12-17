@@ -80,4 +80,39 @@ public class UserController(
 
         return Ok(new UserDto(u.Email));
     }
+    /// <summary>
+    /// Delete User
+    /// </summary>
+    /// <remarks>
+    /// Sample request:
+    /// 
+    ///     DELETE /api/v1/users/update
+    ///     {
+    ///         "email": "john@example.com",
+    ///         "password": "abc-123"
+    ///     }
+    /// </remarks>
+    [HttpDelete("delete")]
+    [ProducesResponseType<int>(StatusCodes.Status204NoContent)]
+    [ProducesResponseType<int>(StatusCodes.Status401Unauthorized)]
+    [ProducesResponseType<int>(StatusCodes.Status404NotFound)]
+    [Authorize(Roles = nameof(Role.User))]
+    public IActionResult DeleteUser(AuthUserDto auth)
+    {
+        var email = auth.Email; var password = auth.Password;
+
+        var u = userService.GetByEmail(email);
+
+        logger.LogWarning("Information report has been retrieved for user {Email}", email);
+
+        if (u == null)
+            return NotFound(new ApiResponse(new UserNotFoundException(email).Message));
+
+        if (!AuthService.CompareHash(u.Password, password))
+            return Unauthorized();
+
+        userService.Delete(email);
+
+        return NoContent();
+    }
 }
