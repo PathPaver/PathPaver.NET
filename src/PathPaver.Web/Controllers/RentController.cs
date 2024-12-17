@@ -15,6 +15,9 @@ public class RentController(
 {
     private const string GeoDataApiUrl = "https://nominatim.openstreetmap.org/";
 
+    /// <summary>
+    /// Predict rent price
+    /// </summary>
     [ProducesResponseType<int>(StatusCodes.Status200OK)]
     [ProducesResponseType<int>(StatusCodes.Status403Forbidden)]
     [ProducesResponseType<int>(StatusCodes.Status401Unauthorized)]
@@ -33,6 +36,9 @@ public class RentController(
         );
     }
 
+    /// <summary>
+    /// Find home coordinates
+    /// </summary>
     [ProducesResponseType<int>(StatusCodes.Status200OK)]
     [ProducesResponseType<int>(StatusCodes.Status400BadRequest)]
     [ProducesResponseType<int>(StatusCodes.Status404NotFound)]

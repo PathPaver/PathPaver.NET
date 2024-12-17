@@ -11,6 +11,9 @@ namespace PathPaver.Web.Controllers;
 [Route("/api/v1/auth")]
 public class AuthController(AuthService authService, UserService userService) : ControllerBase
 {
+    /// <summary>
+    /// Verify token
+    /// </summary>
     [HttpGet("verify-token")]
     [ProducesResponseType<int>(StatusCodes.Status200OK)]
     [ProducesResponseType<int>(StatusCodes.Status400BadRequest)]
@@ -24,6 +27,18 @@ public class AuthController(AuthService authService, UserService userService) : 
         return BadRequest(new ApiResponse("Invalid token."));
     }
 
+    /// <summary>
+    /// Login user
+    /// </summary>
+    /// <remarks>
+    /// Sample request:
+    /// 
+    ///     POST /api/v1/auth/login
+    ///     {
+    ///         "email": "support@pathpaver.com"
+    ///         "password": "1234"
+    ///     }
+    /// </remarks>
     [HttpPost("login")]
     [ProducesResponseType<int>(StatusCodes.Status200OK)]
     [ProducesResponseType<int>(StatusCodes.Status401Unauthorized)]
@@ -39,6 +54,18 @@ public class AuthController(AuthService authService, UserService userService) : 
         return Ok(new TokenDto(authService.GenerateToken(user)));
     }
 
+    /// <summary>
+    /// Signup user
+    /// </summary>
+    /// <remarks>
+    /// Sample request:
+    /// 
+    ///     POST /api/v1/auth/signup
+    ///     {
+    ///         "email": "test@pathpaver.com"
+    ///         "password": "1234"
+    ///     }
+    /// </remarks>
     [HttpPost("signup")]
     [ProducesResponseType<int>(StatusCodes.Status200OK)]
     [ProducesResponseType<int>(StatusCodes.Status400BadRequest)]
