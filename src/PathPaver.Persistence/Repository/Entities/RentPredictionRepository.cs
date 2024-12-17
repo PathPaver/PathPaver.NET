@@ -8,11 +8,5 @@ public sealed class RentPredictionRepository(AppDbContext context) : BaseReposit
 {
     #region Overrided Methods from BaseRepository
 
-    public override void Update(string name, RentPrediction updatedRentPrediction)
-    {
-        // to do
-        base.Update(name, updatedRentPrediction);
-    }
-
     #endregion
 }
