@@ -56,6 +56,7 @@ public class UserController(
     /// </remarks>
     [HttpPut("update")]
     [ProducesResponseType<int>(StatusCodes.Status200OK)]
+    [ProducesResponseType<int>(StatusCodes.Status400BadRequest)]
     [ProducesResponseType<int>(StatusCodes.Status401Unauthorized)]
     [ProducesResponseType<int>(StatusCodes.Status404NotFound)]
     [Authorize(Roles = nameof(Role.User))]
@@ -63,6 +64,9 @@ public class UserController(
     {
         var email = updateUserDto.Email; var password = updateUserDto.Password;
         var newEmail = updateUserDto.NewEmail; var newPassword = updateUserDto.NewPassword;
+
+        if (email == newEmail && password == newPassword) 
+            return BadRequest();
 
         var u = userService.GetByEmail(email);
 
