@@ -47,4 +47,9 @@ The main project contains the presentation layer and implements the ASP.NET Core
 
 This project uses a tool called artillery to run stress tests on our website. 
 
-First things first, create a folder called "test-data", then add a json file called "login.json" inside the folder. This will be used by the stress test script to generate a valid token.
+Before running this test, you must create a folder called "test-data", then add a json file called "login.json" inside the folder. This will be used by the stress test script to log into the backend and generate a valid token.
+
+Next you'll need to download a tool called "jq". It allows json parsing through the command terminal. This is required for the run-tests-script.sh file, to extract the token and store it in a csv file.
+
+
+
