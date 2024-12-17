@@ -23,5 +23,13 @@ public sealed class UserRepository(AppDbContext context) : BaseRepository<User>(
         context.Update(toUpdateUser).Context.SaveChanges();
     }
 
+    public override void Delete(string name)
+    {
+        var toUpdateUser = GetByEmail(name);
+        if (toUpdateUser == null) return;
+        toUpdateUser.IsVisible = false;
+        context.Update(toUpdateUser).Context.SaveChanges();
+    }
+
     #endregion
 }
