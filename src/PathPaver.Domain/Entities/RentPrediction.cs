@@ -11,6 +11,7 @@ public class RentPrediction(
     float longitude,
     string region,
     float squareFeet,
+    string state,
     string street,
     string userId
 ) : BaseEntity
@@ -24,6 +25,7 @@ public class RentPrediction(
     public float Latitude { get; set; } = latitude;
     public float Longitude { get; set; } = longitude;
     public string Region { get; set; } = region;
+    public string State { get; set; } = state;
     public float SquareFeet { get; set; } = squareFeet;
     public string Street { get; set; } = street;
     public string UserId { get; set; } = userId;

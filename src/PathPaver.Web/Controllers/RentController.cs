@@ -4,6 +4,8 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.ML;
 using PathPaver.Application.DTOs;
 using PathPaver.Application.Services.Entities;
+using PathPaver.Domain.Common;
+using PathPaver.Domain.Entities;
 using PathPaver.Domain.Entities.Enum;
 using PathPaver.ML;
 
@@ -12,7 +14,8 @@ namespace PathPaver.Web.Controllers;
 [ApiController]
 [Route("/api/v1/rents")]
 public class RentController(
-    PredictionEnginePool<ApartmentInput, ApartmentOutput> predictionEnginePool, RentPredictionService rentPredictionService) : ControllerBase
+    PredictionEnginePool<ApartmentInput, ApartmentOutput> predictionEnginePool,
+    RentPredictionService rentPredictionService) : ControllerBase
 {
     private const string GeoDataApiUrl = "https://nominatim.openstreetmap.org/";
 
@@ -23,21 +26,48 @@ public class RentController(
     [ProducesResponseType<int>(StatusCodes.Status403Forbidden)]
     [ProducesResponseType<int>(StatusCodes.Status401Unauthorized)]
     [HttpPost("predict")]
-    [Authorize(Roles =
-        nameof(Role.User))] // Need to be authenticated and have the role User to be able to make prediction
-    public async Task<IActionResult> PredictRentPrice(RentPredictionDto rentPredictionDto)
+    // [Authorize(Roles =
+    //     nameof(Role.User))] // Need to be authenticated and have the role User to be able to make prediction
+    public async Task<IActionResult> PredictRentPrice([FromBody] RentPredictionDto rentPredictionDto)
     {
-        //rentPredictionService.Create();
-        
+        try
+        {
+            var random = new Random();
+
+            await Task.Delay(5000);
+
+            RentPrediction rentPrediction = new(
+                price: random.Next(1000, 100_000),
+                probability: random.Next(0, 100) / 100.0f,
+                baths: rentPredictionDto.Baths,
+                beds: rentPredictionDto.Beds,
+                latitude: rentPredictionDto.Coordinates[0],
+                longitude: rentPredictionDto.Coordinates[1],
+                region: rentPredictionDto.Region,
+                squareFeet: rentPredictionDto.SquareFeet,
+                street: rentPredictionDto.Street,
+                state: rentPredictionDto.State,
+                userId: MongoDB.Bson.ObjectId.GenerateNewId().ToString()
+            );
+
+            rentPrediction.Id = MongoDB.Bson.ObjectId.GenerateNewId().ToString();
+
+            rentPredictionService.Create(rentPrediction);
+            return Ok(rentPrediction.Id);
+        }
+        catch
+        {
+            return Problem("Internal server error.");
+        }
+
         /*return Ok(
             await Task.FromResult(predictionEnginePool.Predict
                 (
                     modelName: "RentPricePredictor",
-                    apartmentInput // Input 
+                    apartmentInput // Input
                 )
             )
         );*/
-        return Ok();
     }
 
     /// <summary>
