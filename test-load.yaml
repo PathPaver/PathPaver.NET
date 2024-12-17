@@ -1,0 +1,11 @@
+config:
+  target: 'http://localhost:5231'
+  phases:
+    - duration: 5  # Durée du test en secondes
+      arrivalRate: 10  # Requêtes par seconde
+scenarios:
+  - flow:
+      - get:
+          url: "/api/v1/users/jessica@gmail.com"
+# make sure a dotnet server is running
+# artillery run test-load.yaml
