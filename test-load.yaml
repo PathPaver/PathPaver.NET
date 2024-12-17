@@ -5,7 +5,7 @@ config:
       arrivalRate: 10  # Requêtes par seconde
   payload:
       # Define the coping file and fields to load
-      path: "token.csv"
+      path: "test-data/token.csv"
       fields:
         - "token"
       # Specify sequential if you want to run csv in order from the beginning 
