@@ -20,8 +20,8 @@ public class UserService(IUserRepository userRepository)
         userRepository.Delete(email);
     }
 
-    public void Update(long id, User inst)
+    public void Update(string email, User inst)
     {
-        throw new NotImplementedException();
+        userRepository.Update(email, inst);
     }
 }
