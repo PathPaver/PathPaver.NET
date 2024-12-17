@@ -27,6 +27,7 @@ public sealed class UserRepository(AppDbContext context) : BaseRepository<User>(
     {
         var toUpdateUser = GetByEmail(name);
         if (toUpdateUser == null) return;
+        toUpdateUser.Email = "";
         toUpdateUser.IsVisible = false;
         context.Update(toUpdateUser).Context.SaveChanges();
     }
