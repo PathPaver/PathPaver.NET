@@ -1,5 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations;
-using System.Text;
+﻿using System.Text;
 using Microsoft.IdentityModel.Tokens;
 
 namespace PathPaver.Application.Services.Auth {
