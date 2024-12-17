@@ -4,7 +4,7 @@ using PathPaver.Persistence.Context;
 
 namespace PathPaver.Persistence.Repository.Entities;
 
-public sealed class UserRepository(UserDbContext context) : BaseRepository<User>(context), IUserRepository
+public sealed class UserRepository(AppDbContext context) : BaseRepository<User>(context), IUserRepository
 {
     #region Overrided Methods from BaseRepository
 

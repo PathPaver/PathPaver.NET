@@ -6,7 +6,7 @@ using PathPaver.Persistence.Context;
 
 namespace PathPaver.Persistence.Repository;
 
-public class BaseRepository<T>(UserDbContext context) : IBaseRepository<T> where T : BaseEntity // Force to be a class that inherit from BaseEntity
+public class BaseRepository<T>(AppDbContext context) : IBaseRepository<T> where T : BaseEntity // Force to be a class that inherit from BaseEntity
 {
     #region CustomMethods
     

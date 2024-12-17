@@ -50,7 +50,7 @@ builder.Configuration
 
 var clientConnection = new MongoClient(DbSettings.ConnectionURI);
 
-builder.Services.AddDbContext<UserDbContext>(options =>
+builder.Services.AddDbContext<AppDbContext>(options =>
 {
     options.UseMongoDB(clientConnection, DbSettings.DatabaseName);
 });

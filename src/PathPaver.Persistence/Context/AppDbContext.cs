@@ -4,7 +4,7 @@ using PathPaver.Domain.Entities;
 
 namespace PathPaver.Persistence.Context;
 
-public class UserDbContext(DbContextOptions options) : DbContext(options)
+public class AppDbContext(DbContextOptions options) : DbContext(options)
 {
     public DbSet<User> Users { get; init; }
     public DbSet<GeneratedResult> GeneratedResults { get; init; }
