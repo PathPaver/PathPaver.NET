@@ -59,7 +59,7 @@ public class UserController(
     [ProducesResponseType<int>(StatusCodes.Status401Unauthorized)]
     [ProducesResponseType<int>(StatusCodes.Status404NotFound)]
     [Authorize(Roles = nameof(Role.User))]
-    public IActionResult UpdatePassword(UpdateUserDto updateUserDto)
+    public IActionResult UpdateUser(UpdateUserDto updateUserDto)
     {
         var email = updateUserDto.Email; var password = updateUserDto.Password;
         var newEmail = updateUserDto.NewEmail; var newPassword = updateUserDto.NewPassword;
