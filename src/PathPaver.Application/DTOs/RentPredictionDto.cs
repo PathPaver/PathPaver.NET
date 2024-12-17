@@ -6,5 +6,6 @@ public record RentPredictionDto(
     Tuple<float, float> Coordinates,
     string Region,
     float SquareFeet,
+    string State,
     string Street
 );
