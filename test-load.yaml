@@ -3,16 +3,22 @@ config:
   phases:
     - duration: 5  # Durée du test en secondes
       arrivalRate: 10  # Requêtes par seconde
-  defaults:
-    headers:
-      authorization: "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Implc3NpY2FAZ21haWwuY29tIiwicm9sZSI6IlVzZXIiLCJuYmYiOjE3MzQ0NTUxNDUsImV4cCI6MTczNDQ1ODc0NSwiaWF0IjoxNzM0NDU1MTQ1fQ._drcb5eC72jxEfPrUP6w-oMLmNEwpcE1c22XzDMzOsA"
+  payload:
+      # Define the coping file and fields to load
+      path: "token.csv"
+      fields:
+        - "token"
+      # Specify sequential if you want to run csv in order from the beginning 
+      order: sequence
+      # Ignore the first line of the csv
+      skipHeader: true
 
 scenarios:
   - flow:
       - get:
           url: "/api/v1/auth/verify-token"
           qs:
-            token: "notatoken"
+            token: "{{token}}"
       - post:
           url: "/api/v1/auth/login"
           json:
@@ -20,6 +26,8 @@ scenarios:
             password: "Jessica08"
       - post:
           url: "/api/v1/rents/predict"
+          headers:
+            authorization: "Bearer {{token}}"
           json:
             price: 500.0
             longitude: 0.0
