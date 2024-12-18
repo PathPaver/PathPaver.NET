@@ -114,4 +114,22 @@ public class RentController(
             float.Parse($"{firstHome["lon"]}"),
         });
     }
+
+    /// <summary>
+    /// Get a prediction by id.
+    /// </summary>
+    [HttpGet("prediction/{id}")]
+    [ProducesResponseType<int>(StatusCodes.Status200OK)]
+    [ProducesResponseType<int>(StatusCodes.Status404NotFound)]
+    public IActionResult FindPrediction([FromRoute] string id)
+    {
+        var rentPrediction = rentPredictionService.GetById(id);
+        
+        if (rentPrediction is null)
+        {
+            return NotFound(new ApiResponse("No prediction found."));
+        }
+     
+        return Ok(rentPrediction);
+    }
 }
