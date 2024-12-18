@@ -31,12 +31,12 @@ public class UserController(
     {
         var u = userService.GetByEmail(email);
 
-        logger.LogWarning("Information report has been retrieved for user {Email}", email);
+        logger?.LogWarning("Information report has been retrieved for user {Email}", email);
 
         if (u != null)
             return Ok(new UserDto(u.Email));
 
-        logger.LogError(new Exception($"User with email {email} not found."), "Tried to Get user info of {Email} but failed. User doesn't seem to exist", email);
+        logger?.LogError(new Exception($"User with email {email} not found."), "Tried to Get user info of {Email} but failed. User doesn't seem to exist", email);
         return NotFound(new ApiResponse(new UserNotFoundException(email).Message));
     }
 
@@ -70,13 +70,15 @@ public class UserController(
 
         var u = userService.GetByEmail(email);
 
-        logger.LogWarning("Information report has been retrieved for user {Email}", email);
+        logger?.LogWarning("Information report has been retrieved for user {Email}", email);
 
         if (u == null)
             return NotFound(new ApiResponse(new UserNotFoundException(email).Message));
 
         if (!AuthService.CompareHash(u.Password, password))
             return Unauthorized();
+
+        logger?.LogWarning("Update user associated with {Email}", email);
 
         u.Email = newEmail;
         u.Password = AuthService.HashString(newPassword);
@@ -107,13 +109,15 @@ public class UserController(
 
         var u = userService.GetByEmail(email);
 
-        logger.LogWarning("Information report has been retrieved for user {Email}", email);
+        logger?.LogWarning("Information report has been retrieved for user {Email}", email);
 
         if (u == null)
             return NotFound(new ApiResponse(new UserNotFoundException(email).Message));
 
         if (!AuthService.CompareHash(u.Password, password))
             return Unauthorized();
+
+        logger?.LogWarning("Deleting user associated with {Email}", email);
 
         userService.Delete(email);
 
