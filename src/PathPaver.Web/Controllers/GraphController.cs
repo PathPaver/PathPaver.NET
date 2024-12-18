@@ -12,19 +12,26 @@ public class GraphController : ControllerBase
     [ProducesResponseType<int>(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> GetGraph(string graph_name, [FromQuery] string pet_choice = "All", [FromQuery] bool furnished = false, [FromQuery] int beds = 0)
     {
-        var rootPath = Directory.GetParent(AppContext.BaseDirectory)?.Parent?.Parent?.Parent?.FullName; // Root directory of the project
+        var rootPath = Directory.GetParent(AppContext.BaseDirectory)
+            ?.Parent
+            ?.Parent
+            ?.Parent
+            ?.FullName; // Root directory of the project
+        
         var graphPath = Path.Combine(rootPath, $"Scripts/{graph_name}.py"); // Finds the path of the python script to run according to graph name
         if (graph_name == "cheapest_price") // cheapest_price.py requires arguments
         {
             graphPath += $" {pet_choice} {furnished} {beds}";
         }
-        ProcessStartInfo p = new ProcessStartInfo(); // Process to run the python script
-        p.FileName = "python";
-        p.Arguments = $"{graphPath}";
-        p.RedirectStandardOutput = true;
-        p.RedirectStandardError = true;
-        p.CreateNoWindow = true;
-        p.UseShellExecute = false;
+        var p = new ProcessStartInfo()
+        {
+            FileName = "python",
+            Arguments = $"{graphPath}",
+            RedirectStandardOutput = true,
+            RedirectStandardError = true,
+            CreateNoWindow = true,
+            UseShellExecute = false
+        }; // Process to run the python script
 
         using var process = Process.Start(p);
         var error = await process.StandardError.ReadToEndAsync();
