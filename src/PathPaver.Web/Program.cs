@@ -1,9 +1,7 @@
 using System.Reflection;
-using System.Text;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.ML;
-using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using MongoDB.Driver;
 using PathPaver.Application.Repository.Entities;
@@ -71,7 +69,7 @@ builder.Services.AddScoped<RentPredictionService>();
 
 // PredictionEnginePool AKA the model that will predict our rent prices
 builder.Services.AddPredictionEnginePool<ApartmentInput, ApartmentOutput>()
-    .FromFile(modelName: "RentPricePredictor", filePath: "../PathPaver.ML/Model/TheSavedModelFile",
+    .FromFile(modelName: "RentPricePredictor", filePath: "../PathPaver.ML/Model/model.zip",
         watchForChanges: true);
 
 #endregion

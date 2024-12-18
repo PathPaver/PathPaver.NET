@@ -2,7 +2,10 @@ using System.Text.Json;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.ML;
+using Microsoft.Net.Http.Headers;
+using MongoDB.Bson;
 using PathPaver.Application.DTOs;
+using PathPaver.Application.Services.Auth;
 using PathPaver.Application.Services.Entities;
 using PathPaver.Domain.Entities;
 using PathPaver.Domain.Entities.Enum;
@@ -13,9 +16,10 @@ namespace PathPaver.Web.Controllers;
 [ApiController]
 [Route("/api/v1/rents")]
 public class RentController(
-    PredictionEnginePool<ApartmentInput, ApartmentOutput> predictionEnginePool,
-    RentPredictionService rentPredictionService) : ControllerBase
+    PredictionEnginePool<ApartmentInput, ApartmentOutput> predictionEnginePool, RentPredictionService rentPredictionService
+    ) : ControllerBase
 {
+    // API link here because document force us to make all requests from the backend
     private const string GeoDataApiUrl = "https://nominatim.openstreetmap.org/";
 
     /// <summary>
@@ -28,45 +32,32 @@ public class RentController(
     [Authorize(Roles = nameof(Role.User))]
     public async Task<IActionResult> PredictRentPrice([FromBody] RentPredictionDto rentPredictionDto)
     {
-        try
+        // Find user id with Email
+
+        var predictedOutput = await Task.FromResult(predictionEnginePool.Predict(modelName: "RentPricePredictor", new ApartmentInput 
         {
-            var random = new Random();
-
-            await Task.Delay(5000);
-
-            RentPrediction rentPrediction = new(
-                price: random.Next(1000, 100_000),
-                probability: random.Next(0, 100) / 100.0f,
-                baths: rentPredictionDto.Baths,
-                beds: rentPredictionDto.Beds,
-                latitude: rentPredictionDto.Coordinates[0],
-                longitude: rentPredictionDto.Coordinates[1],
-                region: rentPredictionDto.Region,
-                squareFeet: rentPredictionDto.SquareFeet,
-                street: rentPredictionDto.Street,
-                state: rentPredictionDto.State,
-                userId: MongoDB.Bson.ObjectId.GenerateNewId()
-            );
-
-            rentPrediction.Id = MongoDB.Bson.ObjectId.GenerateNewId();
-
-            rentPredictionService.Create(rentPrediction);
-            return Ok(rentPrediction.Id.ToString());
-        }
-        catch(Exception ex)
-        {
-            Console.WriteLine(ex);
-            return Problem("Internal server error.");
-        }
-
-        /*return Ok(
-            await Task.FromResult(predictionEnginePool.Predict
-                (
-                    modelName: "RentPricePredictor",
-                    apartmentInput // Input
-                )
-            )
-        );*/
+                Beds = rentPredictionDto.Beds,
+                Baths = rentPredictionDto.Baths,
+                Longitude = rentPredictionDto.Coordinates[0],
+                Latitude = rentPredictionDto.Coordinates[1],
+                SquareFeet = rentPredictionDto.SquareFeet 
+        }));
+        
+        var rentPrediction = new RentPrediction(
+            price: predictedOutput.Price,
+            baths: rentPredictionDto.Baths,
+            beds:  rentPredictionDto.Beds,
+            latitude: rentPredictionDto.Coordinates[0],
+            longitude: rentPredictionDto.Coordinates[1],
+            region: rentPredictionDto.Region,
+            squareFeet: rentPredictionDto.SquareFeet,
+            street: rentPredictionDto.Street,
+            state: rentPredictionDto.State
+            
+        ) { Id = ObjectId.GenerateNewId() };
+        
+        rentPredictionService.Create(rentPrediction);
+        return Ok(rentPrediction.Id.ToString());
     }
 
     /// <summary>
