@@ -16,7 +16,7 @@ namespace PathPaver.Web.Controllers;
 [ApiController]
 [Route("/api/v1/rents")]
 public class RentController(
-    PredictionEnginePool<ApartmentInput, ApartmentOutput> predictionEnginePool, RentPredictionService rentPredictionService, AuthService authService
+    PredictionEnginePool<ApartmentInput, ApartmentOutput> predictionEnginePool, RentPredictionService rentPredictionService
     ) : ControllerBase
 {
     // API link here because document force us to make all requests from the backend
@@ -32,11 +32,6 @@ public class RentController(
     [Authorize(Roles = nameof(Role.User))]
     public async Task<IActionResult> PredictRentPrice([FromBody] RentPredictionDto rentPredictionDto)
     {
-        // ObjectId userId = Get id user from JWT
-        string userEmail = authService.GetEmailByToken(Request.Headers[HeaderNames.Authorization]!);
-        
-        // Save RentPrediction Model into DB ( contain everything in RentPredictionDto + the price ) 
-        // Retrieve email from token
         // Find user id with Email
 
         var predictedOutput = await Task.FromResult(predictionEnginePool.Predict(modelName: "RentPricePredictor", new ApartmentInput 
@@ -48,24 +43,21 @@ public class RentController(
                 SquareFeet = rentPredictionDto.SquareFeet 
         }));
         
-        var userId = ObjectId.GenerateNewId();
-
         var rentPrediction = new RentPrediction(
             price: predictedOutput.Price,
             baths: rentPredictionDto.Baths,
-            beds: rentPredictionDto.Beds,
+            beds:  rentPredictionDto.Beds,
             latitude: rentPredictionDto.Coordinates[0],
             longitude: rentPredictionDto.Coordinates[1],
             region: rentPredictionDto.Region,
             squareFeet: rentPredictionDto.SquareFeet,
             street: rentPredictionDto.Street,
-            state: rentPredictionDto.State,
-            userId: userId
+            state: rentPredictionDto.State
             
         ) { Id = ObjectId.GenerateNewId() };
         
         rentPredictionService.Create(rentPrediction);
-        return Ok(rentPrediction.Id);
+        return Ok(rentPrediction.Id.ToString());
     }
 
     /// <summary>
