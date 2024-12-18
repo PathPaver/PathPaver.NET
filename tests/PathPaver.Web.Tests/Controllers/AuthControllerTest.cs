@@ -27,6 +27,7 @@ public class AuthControllerTest
         _users = new Dictionary<string, AuthUserDto>
         {
             { "exist", new AuthUserDto("neki@gmail.com", "neki123")},
+            { "valid", new AuthUserDto("newEmail@gmail.com", "pass123")},
             { "invalid", new AuthUserDto("youarenotanemail!", "hahahaahahahaahahhaahahha")},
             { "dontExist", new AuthUserDto("invisible@gmail.com", "notExisting123")}
         };
@@ -112,8 +113,8 @@ public class AuthControllerTest
     {
         var result = _authController.SignupUser(
             new SignupUserDto(
-                "newEmail@gmail.com",
-                "pass123")
+                _users["valid"].Email,
+                _users["valid"].Password)
             );
 
         Assert.That(result, Is.InstanceOf<OkObjectResult>());
