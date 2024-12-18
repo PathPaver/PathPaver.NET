@@ -1,12 +1,9 @@
 using System.Text.Json;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.ML;
 using PathPaver.Application.DTOs;
 using PathPaver.Application.Services.Entities;
-using PathPaver.Domain.Common;
 using PathPaver.Domain.Entities;
-using PathPaver.Domain.Entities.Enum;
 using PathPaver.ML;
 
 namespace PathPaver.Web.Controllers;
@@ -47,16 +44,17 @@ public class RentController(
                 squareFeet: rentPredictionDto.SquareFeet,
                 street: rentPredictionDto.Street,
                 state: rentPredictionDto.State,
-                userId: MongoDB.Bson.ObjectId.GenerateNewId().ToString()
+                userId: MongoDB.Bson.ObjectId.GenerateNewId()
             );
 
-            rentPrediction.Id = MongoDB.Bson.ObjectId.GenerateNewId().ToString();
+            rentPrediction.Id = MongoDB.Bson.ObjectId.GenerateNewId();
 
             rentPredictionService.Create(rentPrediction);
-            return Ok(rentPrediction.Id);
+            return Ok(rentPrediction.Id.ToString());
         }
-        catch
+        catch(Exception ex)
         {
+            Console.WriteLine(ex);
             return Problem("Internal server error.");
         }
 
