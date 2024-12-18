@@ -61,10 +61,8 @@ public class RentController(
             street: rentPredictionDto.Street,
             state: rentPredictionDto.State,
             userId: userId
-        )
-        {
-            Id = ObjectId.GenerateNewId()
-        };
+            
+        ) { Id = ObjectId.GenerateNewId() };
         
         rentPredictionService.Create(rentPrediction);
         return Ok(rentPrediction.Id);
