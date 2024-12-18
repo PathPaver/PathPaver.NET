@@ -1,3 +1,4 @@
+using MongoDB.Bson;
 using PathPaver.Application.Repository.Entities;
 using PathPaver.Domain.Entities;
 
@@ -7,7 +8,7 @@ public class RentPredictionService(IRentPredictionRepository rentPredictionRepos
 {
     public RentPrediction? GetById(string id)
     {
-        return rentPredictionRepository.Get(id);
+        return rentPredictionRepository.Get(new ObjectId(id));
     }
     
     public void Create(RentPrediction inst)
