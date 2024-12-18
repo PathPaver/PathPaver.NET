@@ -1,5 +1,8 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using MongoDB.Bson;
+using MongoDB.Bson.Serialization.Attributes;
+using MongoDB.Bson.Serialization.IdGenerators;
 
 namespace PathPaver.Domain.Common;
 
@@ -10,7 +13,8 @@ public abstract class BaseEntity
 {
     [Key]
     [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-    public string? Id { get; set; }
-    public DateTimeOffset DateCreated { get; set; } = DateTimeOffset.Now;
+    public ObjectId Id { get; set; }
+
+    public DateTime DateCreated { get; set; } = DateTime.Now;
     public bool IsVisible { get; set; } = true;
 }

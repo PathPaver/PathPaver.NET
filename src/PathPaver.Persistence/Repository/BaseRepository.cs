@@ -1,4 +1,5 @@
 using Microsoft.EntityFrameworkCore;
+using MongoDB.Bson;
 using MongoDB.Driver;
 using PathPaver.Application.Repository;
 using PathPaver.Domain.Common;
@@ -13,6 +14,11 @@ public class BaseRepository<T>(AppDbContext context) : IBaseRepository<T> where 
     public virtual T Get(string name)
     {
         return context.Find<T>(name)!;
+    }
+
+    public virtual T? Get(ObjectId id)
+    {
+        return context.Find<T>(id);
     }
 
     public virtual void Create(T inst)

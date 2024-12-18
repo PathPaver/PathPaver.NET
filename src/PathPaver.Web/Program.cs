@@ -25,6 +25,7 @@ var builder = WebApplication.CreateBuilder(args);
  * It go look at the appsettings.json file to check Serilog Config
  */
 Log.Logger = new LoggerConfiguration()
+    .WriteTo.Console()
     .WriteTo.File("Logs/log.txt")
     .MinimumLevel.Warning()
     .CreateLogger();

@@ -4,7 +4,6 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.ML;
 using PathPaver.Application.DTOs;
 using PathPaver.Application.Services.Entities;
-using PathPaver.Domain.Common;
 using PathPaver.Domain.Entities;
 using PathPaver.Domain.Entities.Enum;
 using PathPaver.ML;
@@ -26,8 +25,7 @@ public class RentController(
     [ProducesResponseType<int>(StatusCodes.Status403Forbidden)]
     [ProducesResponseType<int>(StatusCodes.Status401Unauthorized)]
     [HttpPost("predict")]
-    // [Authorize(Roles =
-    //     nameof(Role.User))] // Need to be authenticated and have the role User to be able to make prediction
+    [Authorize(Roles = nameof(Role.User))]
     public async Task<IActionResult> PredictRentPrice([FromBody] RentPredictionDto rentPredictionDto)
     {
         try
@@ -47,16 +45,17 @@ public class RentController(
                 squareFeet: rentPredictionDto.SquareFeet,
                 street: rentPredictionDto.Street,
                 state: rentPredictionDto.State,
-                userId: MongoDB.Bson.ObjectId.GenerateNewId().ToString()
+                userId: MongoDB.Bson.ObjectId.GenerateNewId()
             );
 
-            rentPrediction.Id = MongoDB.Bson.ObjectId.GenerateNewId().ToString();
+            rentPrediction.Id = MongoDB.Bson.ObjectId.GenerateNewId();
 
             rentPredictionService.Create(rentPrediction);
-            return Ok(rentPrediction.Id);
+            return Ok(rentPrediction.Id.ToString());
         }
-        catch
+        catch(Exception ex)
         {
+            Console.WriteLine(ex);
             return Problem("Internal server error.");
         }
 
@@ -130,6 +129,6 @@ public class RentController(
             return NotFound(new ApiResponse("No prediction found."));
         }
      
-        return Ok(RentPredictionDto.FromRentPrediction(rentPrediction));
+        return Ok(RentViewDto.FromRentPrediction(rentPrediction));
     }
 }
