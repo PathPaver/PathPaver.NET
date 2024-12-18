@@ -129,6 +129,6 @@ public class RentController(
             return NotFound(new ApiResponse("No prediction found."));
         }
      
-        return Ok(RentPredictionDto.FromRentPrediction(rentPrediction));
+        return Ok(RentViewDto.FromRentPrediction(rentPrediction));
     }
 }
