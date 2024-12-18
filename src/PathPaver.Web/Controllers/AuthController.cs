@@ -78,7 +78,7 @@ public class AuthController(AuthService authService, UserService userService) : 
         var pattern = @"[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}";
         var match = Regex.Match(userDto.Email, pattern);
         if (!match.Success) 
-            return BadRequest(new ApiResponse($"Email not formatted properly."));
+            return BadRequest(new ApiResponse($"Email is not formatted properly."));
         
         var user = userService.GetByEmail(userDto.Email);
         
