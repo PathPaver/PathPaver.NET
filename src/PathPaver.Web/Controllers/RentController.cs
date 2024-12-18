@@ -1,9 +1,11 @@
 using System.Text.Json;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.ML;
 using PathPaver.Application.DTOs;
 using PathPaver.Application.Services.Entities;
 using PathPaver.Domain.Entities;
+using PathPaver.Domain.Entities.Enum;
 using PathPaver.ML;
 
 namespace PathPaver.Web.Controllers;
@@ -23,8 +25,7 @@ public class RentController(
     [ProducesResponseType<int>(StatusCodes.Status403Forbidden)]
     [ProducesResponseType<int>(StatusCodes.Status401Unauthorized)]
     [HttpPost("predict")]
-    // [Authorize(Roles =
-    //     nameof(Role.User))] // Need to be authenticated and have the role User to be able to make prediction
+    [Authorize(Roles = nameof(Role.User))]
     public async Task<IActionResult> PredictRentPrice([FromBody] RentPredictionDto rentPredictionDto)
     {
         try
