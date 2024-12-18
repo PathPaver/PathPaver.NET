@@ -137,7 +137,7 @@ public class UserControllerTest
     {
         var result = _userController.UpdateUser(_userDtoFailAuth);
 
-        Assert.That(result, Is.InstanceOf<UnauthorizedResult>());
+        Assert.That(result, Is.InstanceOf<UnauthorizedObjectResult>());
     }
 
     #endregion
@@ -165,7 +165,7 @@ public class UserControllerTest
     {
         var result = _userController.DeleteUser(_authDtoFailAuth);
 
-        Assert.That(result, Is.InstanceOf<UnauthorizedResult>());
+        Assert.That(result, Is.InstanceOf<UnauthorizedObjectResult>());
     }
 
     #endregion
