@@ -118,7 +118,7 @@ public class RentController(
     /// <summary>
     /// Get a prediction by id.
     /// </summary>
-    [HttpGet("prediction/{id}")]
+    [HttpGet("predictions/{id}")]
     [ProducesResponseType<int>(StatusCodes.Status200OK)]
     [ProducesResponseType<int>(StatusCodes.Status404NotFound)]
     public IActionResult FindPrediction([FromRoute] string id)
@@ -130,6 +130,6 @@ public class RentController(
             return NotFound(new ApiResponse("No prediction found."));
         }
      
-        return Ok(rentPrediction);
+        return Ok(RentPredictionDto.FromRentPrediction(rentPrediction));
     }
 }
