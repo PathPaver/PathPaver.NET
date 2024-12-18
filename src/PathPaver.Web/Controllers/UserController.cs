@@ -11,7 +11,7 @@ namespace PathPaver.Web.Controllers;
 [ApiController]
 [Route("/api/v1/users")]
 public class UserController(
-    UserService userService, ILogger<UserController> logger) : ControllerBase
+    UserService userService, ILogger<UserController>? logger) : ControllerBase
 {
     /// <summary>
     /// Find user by email
