@@ -22,6 +22,10 @@ public class UserControllerTest
 
     private UpdateUserDto _userDto;
 
+    private UpdateUserDto _userDtoFailAuth;
+
+    private UpdateUserDto _userDtoSame;
+
     private Dictionary<string, AuthUserDto> _users;
 
     #region Setup and Teardown
@@ -60,6 +64,8 @@ public class UserControllerTest
         userRepo2.Setup(x => x.GetByEmail(_users["exist"].Email)).Returns((User) null);
 
         _userDto = new UpdateUserDto(_users["exist"].Email, _users["exist"].Password, _users["valid"].Email, _users["valid"].Password);
+        _userDtoSame = new UpdateUserDto(_users["exist"].Email, _users["exist"].Password, _users["exist"].Email, _users["exist"].Password);
+        _userDtoFailAuth = new UpdateUserDto(_users["exist"].Email, _users["dontExist"].Password, _users["exist"].Email, _users["exist"].Password);
 
         _userServiceFail = new UserService(userRepo2.Object);
         _userControllerFail = new UserController(_userServiceFail, null);
@@ -96,7 +102,7 @@ public class UserControllerTest
     #region Update Tests
 
     [Test]
-    public void Update_Return200()
+    public void Update_UserExistReturn200()
     {
         var result = _userController.UpdateUser(_userDto);
 
@@ -104,11 +110,27 @@ public class UserControllerTest
     }
 
     [Test]
-    public void Update_Return404()
+    public void Update_IfUserNotExistReturn404()
     {
         var result = _userControllerFail.UpdateUser(_userDto);
 
         Assert.That(result, Is.InstanceOf<NotFoundObjectResult>());
+    }
+
+    [Test]
+    public void Update_IfSameEmailAndSamePasswordReturn400()
+    {
+        var result = _userController.UpdateUser(_userDtoSame);
+
+        Assert.That(result, Is.InstanceOf<BadRequestResult>());
+    }
+
+    [Test]
+    public void Update_IfWrongPassword401()
+    {
+        var result = _userController.UpdateUser(_userDtoFailAuth);
+
+        Assert.That(result, Is.InstanceOf<UnauthorizedResult>());
     }
 
     #endregion
