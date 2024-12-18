@@ -109,7 +109,7 @@ public class UserControllerTest
     #region Update Tests
 
     [Test]
-    public void Update_UserExistReturn200()
+    public void Update_UserExist_Return200()
     {
         var result = _userController.UpdateUser(_userDto);
 
@@ -117,7 +117,7 @@ public class UserControllerTest
     }
 
     [Test]
-    public void Update_IfUserNotExistReturn404()
+    public void Update_IfUserNotExist_Return404()
     {
         var result = _userControllerFail.UpdateUser(_userDto);
 
@@ -125,7 +125,7 @@ public class UserControllerTest
     }
 
     [Test]
-    public void Update_IfSameEmailAndSamePasswordReturn400()
+    public void Update_IfSameEmailAndSamePassword_Return400()
     {
         var result = _userController.UpdateUser(_userDtoSame);
 
@@ -133,7 +133,7 @@ public class UserControllerTest
     }
 
     [Test]
-    public void Update_IfWrongPassword401()
+    public void Update_IfWrongPassword_Return401()
     {
         var result = _userController.UpdateUser(_userDtoFailAuth);
 
@@ -145,7 +145,7 @@ public class UserControllerTest
     #region Delete Tests
 
     [Test]
-    public void Delete_UserExistReturn204()
+    public void Delete_UserExist_Return204()
     {
         var result = _userController.DeleteUser(_authDto);
 
@@ -153,7 +153,7 @@ public class UserControllerTest
     }
 
     [Test]
-    public void Delete_IfUserNotExistReturn404()
+    public void Delete_IfUserNotExist_Return404()
     {
         var result = _userControllerFail.DeleteUser(_authDto);
 
@@ -161,7 +161,7 @@ public class UserControllerTest
     }
 
     [Test]
-    public void Delete_IfWrongPassword401()
+    public void Delete_IfWrongPassword_Return401()
     {
         var result = _userController.DeleteUser(_authDtoFailAuth);
 
