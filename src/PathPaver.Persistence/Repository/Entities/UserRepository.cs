@@ -1,4 +1,5 @@
 using PathPaver.Application.Repository.Entities;
+using PathPaver.Application.Services.Auth;
 using PathPaver.Domain.Entities;
 using PathPaver.Persistence.Context;
 
@@ -27,7 +28,7 @@ public sealed class UserRepository(AppDbContext context) : BaseRepository<User>(
     {
         var toUpdateUser = GetByEmail(name);
         if (toUpdateUser == null) return;
-        toUpdateUser.Email = "";
+        toUpdateUser.Email = AuthService.HashString($"{toUpdateUser.Id}");
         toUpdateUser.IsVisible = false;
         context.Update(toUpdateUser).Context.SaveChanges();
     }

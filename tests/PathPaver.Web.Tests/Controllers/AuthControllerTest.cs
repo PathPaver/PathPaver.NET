@@ -27,6 +27,7 @@ public class AuthControllerTest
         _users = new Dictionary<string, AuthUserDto>
         {
             { "exist", new AuthUserDto("neki@gmail.com", "neki123")},
+            { "invalid", new AuthUserDto("youarenotanemail!", "hahahaahahahaahahhaahahha")},
             { "dontExist", new AuthUserDto("invisible@gmail.com", "notExisting123")}
         };
         
@@ -87,10 +88,22 @@ public class AuthControllerTest
     {
         var result = _authController.SignupUser(
             new SignupUserDto(
-                _users["exist"].Email, 
+                _users["exist"].Email,
                 _users["exist"].Password)
             );
-        
+
+        Assert.That(result, Is.InstanceOf<BadRequestObjectResult>());
+    }
+
+    [Test]
+    public void SignUpUser_WhenEmailIsInvalid_Return400()
+    {
+        var result = _authController.SignupUser(
+            new SignupUserDto(
+                _users["invalid"].Email,
+                _users["invalid"].Password)
+            );
+
         Assert.That(result, Is.InstanceOf<BadRequestObjectResult>());
     }
 
@@ -102,10 +115,10 @@ public class AuthControllerTest
                 "newEmail@gmail.com",
                 "pass123")
             );
-        
+
         Assert.That(result, Is.InstanceOf<OkObjectResult>());
     }
-    
+
     #endregion
 
     #region VerifyToken Tests
