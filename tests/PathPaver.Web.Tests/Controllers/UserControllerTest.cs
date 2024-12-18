@@ -16,9 +16,11 @@ public class UserControllerTest
 {
     private UserService _userService;
     private UserController _userController;
-    private ILogger<UserController> _logger;
+    
     private UserService _userServiceFail;
     private UserController _userControllerFail;
+
+    private UpdateUserDto _userDto;
 
     private Dictionary<string, AuthUserDto> _users;
 
@@ -57,6 +59,8 @@ public class UserControllerTest
         var userRepo2 = new Mock<IUserRepository>();
         userRepo2.Setup(x => x.GetByEmail(_users["exist"].Email)).Returns((User) null);
 
+        _userDto = new UpdateUserDto(_users["exist"].Email, _users["exist"].Password, _users["valid"].Email, _users["valid"].Password);
+
         _userServiceFail = new UserService(userRepo2.Object);
         _userControllerFail = new UserController(_userServiceFail, null);
     }
@@ -83,6 +87,26 @@ public class UserControllerTest
     public void GetByEmail_Return404()
     {
         var result = _userControllerFail.GetByEmail(_users["dontExist"].Email);
+
+        Assert.That(result, Is.InstanceOf<NotFoundObjectResult>());
+    }
+
+    #endregion
+
+    #region Update Tests
+
+    [Test]
+    public void Update_Return200()
+    {
+        var result = _userController.UpdateUser(_userDto);
+
+        Assert.That(result, Is.InstanceOf<OkObjectResult>());
+    }
+
+    [Test]
+    public void Update_Return404()
+    {
+        var result = _userControllerFail.UpdateUser(_userDto);
 
         Assert.That(result, Is.InstanceOf<NotFoundObjectResult>());
     }
