@@ -76,7 +76,7 @@ public class UserController(
             return NotFound(new ApiResponse(new UserNotFoundException(email).Message));
 
         if (!AuthService.CompareHash(u.Password, password))
-            return Unauthorized();
+            return Unauthorized("You are not authorized to do this action.");
 
         logger?.LogWarning("Update user associated with {Email}", email);
 
@@ -115,7 +115,7 @@ public class UserController(
             return NotFound(new ApiResponse(new UserNotFoundException(email).Message));
 
         if (!AuthService.CompareHash(u.Password, password))
-            return Unauthorized();
+            return Unauthorized("You are not authorized to do this action.");
 
         logger?.LogWarning("Deleting user associated with {Email}", email);
 
