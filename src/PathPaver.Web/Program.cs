@@ -71,7 +71,7 @@ builder.Services.AddScoped<RentPredictionService>();
 
 // PredictionEnginePool AKA the model that will predict our rent prices
 builder.Services.AddPredictionEnginePool<ApartmentInput, ApartmentOutput>()
-    .FromFile(modelName: "RentPricePredictor", filePath: "../PathPaver.ML/Model/mode.zip",
+    .FromFile(modelName: "RentPricePredictor", filePath: "../PathPaver.ML/Model/model.zip",
         watchForChanges: true);
 
 #endregion
