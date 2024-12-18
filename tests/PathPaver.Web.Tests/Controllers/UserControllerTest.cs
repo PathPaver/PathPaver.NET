@@ -62,7 +62,7 @@ public class UserControllerTest
         _userController = new UserController(_userService, null);
 
         var userRepo2 = new Mock<IUserRepository>();
-        userRepo2.Setup(x => x.GetByEmail(_users["exist"].Email)).Returns((User) null);
+        userRepo2.Setup(x => x.GetByEmail(_users["dontExist"].Email)).Returns((User) null);
 
         _userServiceFail = new UserService(userRepo2.Object);
         _userControllerFail = new UserController(_userServiceFail, null);
