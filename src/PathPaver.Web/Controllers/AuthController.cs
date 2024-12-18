@@ -5,6 +5,7 @@ using PathPaver.Application.Services.Auth;
 using PathPaver.Application.Services.Entities;
 using PathPaver.Domain.Entities;
 using PathPaver.Domain.Entities.Enum;
+using System.Text.RegularExpressions;
 
 namespace PathPaver.Web.Controllers;
 
@@ -74,6 +75,11 @@ public class AuthController(AuthService authService, UserService userService) : 
     [ProducesResponseType<int>(StatusCodes.Status400BadRequest)]
     public IActionResult SignupUser(SignupUserDto userDto)
     {
+        var pattern = @"/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/";
+        var match = Regex.Match(userDto.Email, pattern);
+        if (!match.Success) 
+            return BadRequest(new ApiResponse("Email not formatted properly."));
+        
         var user = userService.GetByEmail(userDto.Email);
         
         if (user is not null)
