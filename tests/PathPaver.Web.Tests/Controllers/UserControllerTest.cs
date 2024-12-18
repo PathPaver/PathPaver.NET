@@ -25,6 +25,7 @@ public class UserControllerTest
     private UpdateUserDto _userDtoSame;
 
     private AuthUserDto _authDto;
+    private AuthUserDto _authDtoNoEmail;
     private AuthUserDto _authDtoFailAuth;
 
     private Dictionary<string, AuthUserDto> _users;
@@ -41,6 +42,7 @@ public class UserControllerTest
             { "exist", new AuthUserDto("neki@gmail.com", "neki123")},
             { "valid", new AuthUserDto("newEmail@gmail.com", "pass123")},
             { "invalid", new AuthUserDto("youarenotanemail!", "hahahaahahahaahahhaahahha")},
+            { "wrongPass", new AuthUserDto("neki@gmail.com", "nuhuhuh")},
             { "dontExist", new AuthUserDto("invisible@gmail.com", "notExisting123")}
         };
 
@@ -71,8 +73,9 @@ public class UserControllerTest
         _userDtoSame = new UpdateUserDto(_users["exist"].Email, _users["exist"].Password, _users["exist"].Email, _users["exist"].Password);
         _userDtoFailAuth = new UpdateUserDto(_users["exist"].Email, _users["dontExist"].Password, _users["exist"].Email, _users["exist"].Password);
 
-        _authDto = new AuthUserDto(_users["exist"].Email, _users["exist"].Password);
-        _authDtoFailAuth = new AuthUserDto(_users["exist"].Email, _users["invalid"].Password);
+        _authDto = _users["exist"];
+        _authDtoNoEmail = _users["dontExist"];
+        _authDtoFailAuth = _users["wrongPass"];
     }
 
     [OneTimeTearDown]
