@@ -21,10 +21,11 @@ public class UserControllerTest
     private UserController _userControllerFail;
 
     private UpdateUserDto _userDto;
-
     private UpdateUserDto _userDtoFailAuth;
-
     private UpdateUserDto _userDtoSame;
+
+    private AuthUserDto _authDto;
+    private AuthUserDto _authDtoFailAuth;
 
     private Dictionary<string, AuthUserDto> _users;
 
@@ -63,12 +64,15 @@ public class UserControllerTest
         var userRepo2 = new Mock<IUserRepository>();
         userRepo2.Setup(x => x.GetByEmail(_users["exist"].Email)).Returns((User) null);
 
+        _userServiceFail = new UserService(userRepo2.Object);
+        _userControllerFail = new UserController(_userServiceFail, null);
+
         _userDto = new UpdateUserDto(_users["exist"].Email, _users["exist"].Password, _users["valid"].Email, _users["valid"].Password);
         _userDtoSame = new UpdateUserDto(_users["exist"].Email, _users["exist"].Password, _users["exist"].Email, _users["exist"].Password);
         _userDtoFailAuth = new UpdateUserDto(_users["exist"].Email, _users["dontExist"].Password, _users["exist"].Email, _users["exist"].Password);
 
-        _userServiceFail = new UserService(userRepo2.Object);
-        _userControllerFail = new UserController(_userServiceFail, null);
+        _authDto = new AuthUserDto(_users["exist"].Email, _users["exist"].Password);
+        _authDtoFailAuth = new AuthUserDto(_users["exist"].Email, _users["invalid"].Password);
     }
 
     [OneTimeTearDown]
@@ -129,6 +133,34 @@ public class UserControllerTest
     public void Update_IfWrongPassword401()
     {
         var result = _userController.UpdateUser(_userDtoFailAuth);
+
+        Assert.That(result, Is.InstanceOf<UnauthorizedResult>());
+    }
+
+    #endregion
+
+    #region Delete Tests
+
+    [Test]
+    public void Delete_UserExistReturn204()
+    {
+        var result = _userController.DeleteUser(_authDto);
+
+        Assert.That(result, Is.InstanceOf<NoContentResult>());
+    }
+
+    [Test]
+    public void Delete_IfUserNotExistReturn404()
+    {
+        var result = _userControllerFail.DeleteUser(_authDto);
+
+        Assert.That(result, Is.InstanceOf<NotFoundObjectResult>());
+    }
+
+    [Test]
+    public void Delete_IfWrongPassword401()
+    {
+        var result = _userController.DeleteUser(_authDtoFailAuth);
 
         Assert.That(result, Is.InstanceOf<UnauthorizedResult>());
     }
