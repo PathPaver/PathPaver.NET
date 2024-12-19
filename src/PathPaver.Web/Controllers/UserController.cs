@@ -71,6 +71,11 @@ public class UserController(
 
         if (email == newEmail && password == newPassword) 
             return BadRequest("Email and/or password is the same");
+        
+        var emailAlreadyExists = userService.GetByEmail(newEmail)!=null;
+
+        if (emailAlreadyExists)
+            return BadRequest("Email is invalid");
 
         var u = userService.GetByEmail(email);
 
