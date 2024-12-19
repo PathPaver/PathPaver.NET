@@ -9,6 +9,9 @@ Logs/
 project.lock.json
 .vs/
 
+coverage/
+.config/
+
 # mstest test results
 TestResults
 
@@ -121,4 +124,4 @@ src/.vs/config/applicationhost.config
 .vscode/
 
 # Stress Test
-test-data/
+tests/Artillery/test-data/

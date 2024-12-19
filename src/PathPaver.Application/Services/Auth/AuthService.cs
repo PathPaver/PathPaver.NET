@@ -3,6 +3,8 @@ using System.Security.Claims;
 using PathPaver.Domain.Entities;
 using System.IdentityModel.Tokens.Jwt;
 using PathPaver.Application.Repository.Entities;
+using PathPaver.Application.DTOs;
+using System.Text.RegularExpressions;
 
 namespace PathPaver.Application.Services.Auth
 {
@@ -27,6 +29,12 @@ namespace PathPaver.Application.Services.Auth
 
         public static bool CompareHash(string hashed, string toHash) =>
             BCrypt.Net.BCrypt.EnhancedVerify(toHash, hashed);
+
+        public static bool IsValidEmail(string email)
+        {
+            var pattern = @"[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}";
+            return Regex.Match(email, pattern).Success;
+        }
 
         #endregion
 

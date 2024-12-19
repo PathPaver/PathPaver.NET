@@ -11,7 +11,6 @@ public class ApartmentOutput
      * Probability is the probability that this prediction is right
      */
     
-    [ColumnName("PredictedLabel")] 
+    [ColumnName("Score")] 
     public float Price { get; set; }
-    public float Probability { get; set; }
 }

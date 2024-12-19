@@ -1,9 +1,8 @@
+using System.Diagnostics.CodeAnalysis;
 using System.Reflection;
-using System.Text;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.ML;
-using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using MongoDB.Driver;
 using PathPaver.Application.Repository.Entities;
@@ -17,49 +16,54 @@ using PathPaver.Persistence.Context;
 using PathPaver.Persistence.Repository.Entities;
 using Serilog;
 
-var builder = WebApplication.CreateBuilder(args);
-
-#region Configuration
-
-/*
- * Serilog - Logging
- * 
- * It go look at the appsettings.json file to check Serilog Config
- */
-Log.Logger = new LoggerConfiguration()
-    .WriteTo.Console()
-    .WriteTo.File("Logs/log.txt")
-    .MinimumLevel.Warning()
-    .CreateLogger();
-
-if (builder.Environment.IsDevelopment())
+[ExcludeFromCodeCoverage]
+public class Program
 {
-    builder.Configuration.AddUserSecrets<Program>();
-}
+    public static void Main(string[] args)
+    {
+        var builder = WebApplication.CreateBuilder(args);
 
-// To handle UserSecrets content for atlas cluster in DbSettings.cs file
-builder.Configuration
-    .GetSection("MongoCluster")
-    .Get<DbSettings>();
+        #region Configuration
 
-// To handle UserSecrets content for Security related things in AuthSettings.cs file
-builder.Configuration
-    .GetSection("Security")
-    .Get<AuthSettings>();
+        /*
+         * Serilog - Logging
+         * 
+         * It go look at the appsettings.json file to check Serilog Config
+         */
+        Log.Logger = new LoggerConfiguration()
+            .WriteTo.Console()
+            .WriteTo.File("Logs/log.txt")
+            .MinimumLevel.Warning()
+            .CreateLogger();
 
-#endregion
+        if (builder.Environment.IsDevelopment())
+        {
+            builder.Configuration.AddUserSecrets<Program>();
+        }
 
-#region DBContext
+        // To handle UserSecrets content for atlas cluster in DbSettings.cs file
+        builder.Configuration
+            .GetSection("MongoCluster")
+            .Get<DbSettings>();
 
-var clientConnection = new MongoClient(DbSettings.ConnectionURI);
+        // To handle UserSecrets content for Security related things in AuthSettings.cs file
+        builder.Configuration
+            .GetSection("Security")
+            .Get<AuthSettings>();
 
-builder.Services.AddDbContext<AppDbContext>(options =>
-{
-    options.UseMongoDB(clientConnection, DbSettings.DatabaseName);
-});
-#endregion
+        #endregion
 
-#region Scoped Services
+        #region DBContext
+
+        var clientConnection = new MongoClient(DbSettings.ConnectionURI);
+
+        builder.Services.AddDbContext<AppDbContext>(options =>
+        {
+            options.UseMongoDB(clientConnection, DbSettings.DatabaseName);
+        });
+        #endregion
+
+        #region Scoped Services
 
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IRentPredictionRepository, RentPredictionRepository>();
@@ -73,93 +77,94 @@ builder.Services.AddScoped<IRentCheapest, RentCheapestService>();
 builder.Services.AddScoped<IRentLargest, RentLargestService>();
 builder.Services.AddScoped<IRentPriceRange, RentPriceRangeService>();
 
-#endregion
+        #endregion
 
-#region Prediction Related
+        #region Prediction Related
 
-// PredictionEnginePool AKA the model that will predict our rent prices
-builder.Services.AddPredictionEnginePool<ApartmentInput, ApartmentOutput>()
-    .FromFile(modelName: "RentPricePredictor", filePath: "../PathPaver.ML/Model/TheSavedModelFile",
-        watchForChanges: true);
+        // PredictionEnginePool AKA the model that will predict our rent prices
+        builder.Services.AddPredictionEnginePool<ApartmentInput, ApartmentOutput>()
+            .FromFile(modelName: "RentPricePredictor", filePath: "../PathPaver.ML/Model/model.zip",
+                watchForChanges: true);
 
-#endregion
+        #endregion
 
-#region Auth Related
+        #region Auth Related
 
-// Default configuration for Authentication
-builder.Services.AddAuthentication(auth =>
-{
-    auth.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-    auth.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-}).AddJwtBearer(jwt => // Perform auth by extracting and valid JWT token from 'Authorization' header
-{
-    jwt.RequireHttpsMetadata = false; // Will work with HTTP
-    jwt.SaveToken = false; // Token will not be saved in AuthenticationProperties 
-    jwt.TokenValidationParameters = AuthSettings.GetTokenValidationParameters();
-});
+        // Default configuration for Authentication
+        builder.Services.AddAuthentication(auth =>
+        {
+            auth.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+            auth.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+        }).AddJwtBearer(jwt => // Perform auth by extracting and valid JWT token from 'Authorization' header
+        {
+            jwt.RequireHttpsMetadata = false; // Will work with HTTP
+            jwt.SaveToken = false; // Token will not be saved in AuthenticationProperties 
+            jwt.TokenValidationParameters = AuthSettings.GetTokenValidationParameters();
+        });
 
-#endregion
+        #endregion
 
-#region Services
+        #region Services
 
-builder.Services.AddAuthorization();
-builder.Services.AddControllers();
-builder.Services.AddSerilog();
-builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen(c =>
-{
-    c.SwaggerDoc("v1", new OpenApiInfo
-    {
-        Title = "PathPaver API",
-        Version = "v1",
-        Description = "API for searching and predicting rent prices for apartments"
-    });
+        builder.Services.AddAuthorization();
+        builder.Services.AddControllers();
+        builder.Services.AddSerilog();
+        builder.Services.AddEndpointsApiExplorer();
+        builder.Services.AddSwaggerGen(c =>
+        {
+            c.SwaggerDoc("v1", new OpenApiInfo
+            {
+                Title = "PathPaver API",
+                Version = "v1",
+                Description = "API for searching and predicting rent prices for apartments"
+            });
 
-    var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
-    var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
-    c.IncludeXmlComments(xmlPath);
-});
+            var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
+            var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
+            c.IncludeXmlComments(xmlPath);
+        });
 
-#endregion
+        #endregion
 
-var app = builder.Build();
+        var app = builder.Build();
 
-#region Security
+        #region Security
 
-/*
- * Security Middleware for authorizations
- *
- * - Authentication related stuff should go here
- * 
- * CORS + Authorization + Authentication Middleware
- */
+        /*
+         * Security Middleware for authorizations
+         *
+         * - Authentication related stuff should go here
+         * 
+         * CORS + Authorization + Authentication Middleware
+         */
 
-app.UseAuthentication();
-app.UseAuthorization();
-app.UseCors(policyBuilder =>
-{
-    policyBuilder.WithOrigins(builder.Configuration["FrontendUrl"]!)
-        .AllowAnyMethod()
-        .AllowAnyHeader()
-        .AllowCredentials();
-});
+        app.UseAuthentication();
+        app.UseAuthorization();
+        app.UseCors(policyBuilder =>
+        {
+            policyBuilder.WithOrigins(builder.Configuration["FrontendUrl"]!)
+                .AllowAnyMethod()
+                .AllowAnyHeader()
+                .AllowCredentials();
+        });
 
-#endregion
+        #endregion
 
-#region Middlewares
+        #region Middlewares
 
-if (app.Environment.IsDevelopment())
-{
-    app.UseSwagger();
-    app.UseSwaggerUI();
+        app.UseSwagger();
+        app.UseSwaggerUI();
+
+        app.UseSerilogRequestLogging(); // Change default logging to Serilog
+        app.UseHttpsRedirection();
+
+        #endregion
+
+        // To add endpoints for created controllers
+        app.MapControllers();
+
+        app.Run();
+    }
 }
 
-app.UseSerilogRequestLogging(); // Change default logging to Serilog
-app.UseHttpsRedirection();
 
-#endregion
-
-// To add endpoints for created controllers
-app.MapControllers();
-
-app.Run();
