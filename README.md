@@ -8,11 +8,15 @@ Clean Architecture ASP.NET Core project using .NET 8.0.
 
 ## Technologies Used
 
+- .NET 8
 - ASP.NET
 - Serilog
 - Artillery
 - EntityFramework
 - MongoDB
+- Coverlet ( Code Coverage )
+- NUnit3 ( For Unit Test )
+- ReportGenerator ( To generate HTML report for tests )
 
 ## Setup
 
