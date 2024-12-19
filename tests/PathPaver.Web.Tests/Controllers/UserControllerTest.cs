@@ -20,6 +20,7 @@ public class UserControllerTest
     private UserController _userControllerFail;
 
     private UpdateUserDto _userDto;
+    private UpdateUserDto _userDtoAlreadyExists;
     private UpdateUserDto _userDtoInvalid;
     private UpdateUserDto _userDtoFailAuth;
     private UpdateUserDto _userDtoSame;
@@ -70,6 +71,7 @@ public class UserControllerTest
         _userControllerFail = new UserController(_userServiceFail, null);
 
         _userDto = new UpdateUserDto(_users["exist"].Email, _users["exist"].Password, _users["valid"].Email, _users["valid"].Password);
+        _userDtoAlreadyExists = new UpdateUserDto(_users["valid"].Email, _users["exist"].Password, _users["exist"].Email, _users["valid"].Password);
         _userDtoSame = new UpdateUserDto(_users["exist"].Email, _users["exist"].Password, _users["exist"].Email, _users["exist"].Password);
         _userDtoInvalid = new UpdateUserDto(_users["invalid"].Email, _users["invalid"].Password, _users["invalid"].Email, _users["exist"].Password);
         _userDtoFailAuth = new UpdateUserDto(_users["exist"].Email, _users["dontExist"].Password, _users["exist"].Email, _users["exist"].Password);
@@ -137,6 +139,14 @@ public class UserControllerTest
     public void Update_IfEmailInvalid_Return400()
     {
         var result = _userController.UpdateUser(_userDtoInvalid);
+
+        Assert.That(result, Is.InstanceOf<BadRequestObjectResult>());
+    }
+
+    [Test]
+    public void Update_IfEmailAlreadyExists_Return400()
+    {
+        var result = _userController.UpdateUser(_userDtoAlreadyExists);
 
         Assert.That(result, Is.InstanceOf<BadRequestObjectResult>());
     }
