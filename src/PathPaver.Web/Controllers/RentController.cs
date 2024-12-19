@@ -22,6 +22,8 @@ public class RentController(
     // API link here because document force us to make all requests from the backend
     private const string GeoDataApiUrl = "https://nominatim.openstreetmap.org/";
 
+    #region Predict Rent Price
+
     /// <summary>
     /// Predict rent price
     /// </summary>
@@ -59,6 +61,10 @@ public class RentController(
         rentPredictionService.Create(rentPrediction);
         return Ok(rentPrediction.Id.ToString());
     }
+    
+    #endregion
+
+    #region Find Home with Info
 
     /// <summary>
     /// Find home coordinates
@@ -104,7 +110,10 @@ public class RentController(
             float.Parse($"{firstHome["lon"]}"),
         });
     }
+    #endregion
 
+    #region FindPrediction
+    
     /// <summary>
     /// Get a prediction by id.
     /// </summary>
@@ -122,27 +131,6 @@ public class RentController(
      
         return Ok(RentViewDto.FromRentPrediction(rentPrediction));
     }
-
-    /// <summary>
-    /// Get a prediction by id.
-    /// </summary>
-    [HttpGet("predictions/last-5")]
-    [ProducesResponseType<int>(StatusCodes.Status200OK)]
-    [ProducesResponseType<int>(StatusCodes.Status404NotFound)]
-    public IActionResult FindPrediction()
-    {
-        var rentPrediction = rentPredictionService.GetLast5();
-        
-        if (rentPrediction is null || rentPrediction.Length==0)
-        {
-            return NotFound(new ApiResponse("No prediction found."));
-        }
-
-        List<RentPreviewDto> list = [];
-        foreach (var item in rentPrediction)
-        {
-            list.Add(RentPreviewDto.FromRentPrediction(item));
-        }
-        return Ok(list);
-    }
+    
+    #endregion
 }
