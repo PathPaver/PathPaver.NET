@@ -133,7 +133,7 @@ public class RentController(
     {
         var rentPrediction = rentPredictionService.GetLast5();
         
-        if (rentPrediction is null)
+        if (rentPrediction is null || rentPrediction.Length==0)
         {
             return NotFound(new ApiResponse("No prediction found."));
         }
