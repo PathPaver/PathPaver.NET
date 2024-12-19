@@ -6,6 +6,14 @@ Clean Architecture ASP.NET Core project using .NET 8.0.
 
 - .NET 8.0
 
+## Technologies Used
+
+- ASP.NET
+- Serilog
+- Artillery
+- EntityFramework
+- MongoDB
+
 ## Setup
 
 ### Restore Packages
