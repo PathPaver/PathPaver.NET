@@ -1,4 +1,5 @@
-﻿using Moq;
+﻿using Microsoft.AspNetCore.Mvc;
+using Moq;
 using PathPaver.Application.Repository.Entities;
 using PathPaver.Application.Services.Entities;
 using PathPaver.Web.Controllers;
@@ -43,8 +44,17 @@ public class GraphControllerTest
 
 
     [Test]
-    public void Test1()
+    public void GetGraphByName_WhenNameIsRight_ReturnGraph()
     {
+        var result = _graphController.GetGraphByName(WorkingGraphName);
 
+        var contentResult = result as OkObjectResult;
+
+        Assert.Multiple(() =>
+        {
+            Assert.That((Graph) contentResult!.Value!, Is.Not.Null);
+            Assert.That((Graph) contentResult!.Value!, Is.InstanceOf<Graph>());
+            Assert.That(contentResult.StatusCode, Is.EqualTo(200));
+        });
     }
 }
