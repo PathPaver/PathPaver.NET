@@ -72,7 +72,7 @@ public class UserController(
         if (!(AuthService.IsValidEmail(email) && AuthService.IsValidEmail(newEmail)))
             return BadRequest("Email is invalid");
         
-        var emailAlreadyExists = userService.GetByEmail(newEmail)!=null;
+        var emailAlreadyExists = email != newEmail && userService.GetByEmail(newEmail)?.Email==newEmail;
 
         if (emailAlreadyExists)
             return BadRequest("Email is taken");
