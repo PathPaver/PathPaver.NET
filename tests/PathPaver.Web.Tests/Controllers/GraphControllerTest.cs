@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Moq;
+using PathPaver.Application.DTOs;
 using PathPaver.Application.Repository.Entities;
 using PathPaver.Application.Services.Entities;
 using PathPaver.Web.Controllers;
@@ -17,7 +18,7 @@ public class GraphControllerTest
     private GraphController _graphController;
 
     const string WorkingGraphName = "app_type";
-    const string NonWorkingGraphName= "app_type";
+    const string NonWorkingGraphName= "another_name";
 
     #region Setup and TearDown
 
@@ -27,6 +28,9 @@ public class GraphControllerTest
         var mockedIGraphRepo = new Mock<IGraphRepository>();
         mockedIGraphRepo.Setup(x => x.GetGraphByName(WorkingGraphName))
             .Returns(new Graph());
+
+        mockedIGraphRepo.Setup(x => x.GetGraphByName(NonWorkingGraphName))
+            .Returns((Graph) null);
 
         var graphService = new GraphService(mockedIGraphRepo.Object);
 
@@ -50,11 +54,31 @@ public class GraphControllerTest
 
         var contentResult = result as OkObjectResult;
 
+        var body = (Graph) contentResult.Value;
+
         Assert.Multiple(() =>
         {
-            Assert.That((Graph) contentResult!.Value!, Is.Not.Null);
-            Assert.That((Graph) contentResult!.Value!, Is.InstanceOf<Graph>());
+            Assert.That(body, Is.Not.Null);
+            Assert.That(body, Is.InstanceOf<Graph>());
             Assert.That(contentResult.StatusCode, Is.EqualTo(200));
+        });
+    }
+
+    [Test]
+    public void GetGraphByName_WhenNameIsWrong_ReturnNotFound()
+    {
+        var result = _graphController.GetGraphByName(NonWorkingGraphName);
+
+        var contentResult = result as NotFoundObjectResult;
+
+        var body = (ApiResponse)contentResult!.Value!;
+
+        Assert.Multiple(() =>
+        {
+            Assert.That(body, Is.Not.Null);
+            Assert.That(body, Is.InstanceOf<ApiResponse>());
+            Assert.That(body.Message, Does.Contain("not found"));
+            Assert.That(contentResult.StatusCode, Is.EqualTo(404));
         });
     }
 }
