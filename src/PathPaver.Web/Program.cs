@@ -23,8 +23,6 @@ public class Program
 
         #region Configuration
 
-        Console.WriteLine("Windows Server 2025 Core");
-
         /*
          * Serilog - Logging
          *
