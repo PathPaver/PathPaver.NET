@@ -59,6 +59,14 @@ The project contains the infrastructure layer, including the implementation of d
 
 The main project contains the presentation layer and implements the ASP.NET Core web API. It should reference the Application and Infrastructure projects.
 
+## Postman tests
+
+To run the Postman tests, you'll need to import the collection into your Postman application.
+
+Next, you must click on the 3 dots of collection (or right-click), and click the "Run Collection" button. This will then run each test in the proper order. Make sure a server is running before testing.
+
+You also need to update the variables in the collection. Click on the collection, go in the Variables tab, and update the email, password and url fields to match what you need.
+
 ## Stress Tests
 
 This project uses a tool called artillery to run stress tests on our website.
