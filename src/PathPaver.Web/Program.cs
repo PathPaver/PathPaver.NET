@@ -6,10 +6,8 @@ using Microsoft.Extensions.ML;
 using Microsoft.OpenApi.Models;
 using MongoDB.Driver;
 using PathPaver.Application.Repository.Entities;
-using PathPaver.Application.Repository.Entities.RentsScripts;
 using PathPaver.Application.Services.Auth;
 using PathPaver.Application.Services.Entities;
-using PathPaver.Application.Services.Entities.RentsScripts;
 using PathPaver.ML;
 using PathPaver.Persistence;
 using PathPaver.Persistence.Context;
@@ -27,7 +25,7 @@ public class Program
 
         /*
          * Serilog - Logging
-         * 
+         *
          * It go look at the appsettings.json file to check Serilog Config
          */
         Log.Logger = new LoggerConfiguration()
@@ -54,28 +52,25 @@ public class Program
         #endregion
 
         #region DBContext
-
+        
         var clientConnection = new MongoClient(DbSettings.ConnectionURI);
 
         builder.Services.AddDbContext<AppDbContext>(options =>
         {
             options.UseMongoDB(clientConnection, DbSettings.DatabaseName);
         });
+
         #endregion
 
         #region Scoped Services
 
-builder.Services.AddScoped<IUserRepository, UserRepository>();
-builder.Services.AddScoped<IRentPredictionRepository, RentPredictionRepository>();
-builder.Services.AddScoped<AuthService>();
-builder.Services.AddScoped<UserService>();
-builder.Services.AddScoped<RentPredictionService>();
-builder.Services.AddScoped<IGraphRepository, GraphRepository>();
-builder.Services.AddScoped<IRentAppCount, RentAppCountService>();
-builder.Services.AddScoped<IRentBestValue, RentBestValueService>();
-builder.Services.AddScoped<IRentCheapest, RentCheapestService>();
-builder.Services.AddScoped<IRentLargest, RentLargestService>();
-builder.Services.AddScoped<IRentPriceRange, RentPriceRangeService>();
+        builder.Services.AddScoped<IUserRepository, UserRepository>();
+        builder.Services.AddScoped<IRentPredictionRepository, RentPredictionRepository>();
+        builder.Services.AddScoped<AuthService>();
+        builder.Services.AddScoped<UserService>();
+        builder.Services.AddScoped<RentPredictionService>();
+        builder.Services.AddScoped<IGraphRepository, GraphRepository>();
+        builder.Services.AddScoped<GraphService>();
 
         #endregion
 
@@ -134,7 +129,7 @@ builder.Services.AddScoped<IRentPriceRange, RentPriceRangeService>();
          * Security Middleware for authorizations
          *
          * - Authentication related stuff should go here
-         * 
+         *
          * CORS + Authorization + Authentication Middleware
          */
 
@@ -166,5 +161,3 @@ builder.Services.AddScoped<IRentPriceRange, RentPriceRangeService>();
         app.Run();
     }
 }
-
-
