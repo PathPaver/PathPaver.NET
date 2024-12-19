@@ -21,10 +21,15 @@ docker restore
 You need to go to `src/PathPaver.Web/` and run the following commands with the correct values.
 
 ```sh
+cd src/PathPaver.Web
+
 dotnet user-secrets set "MongoCluster:ConnectionURI" "$THE_MONGODB_URI"
 dotnet user-secrets set "MongoCluster:DatabaseName" "$THE_DATABASE_NAME"
 dotnet user-secrets set "FrontendUrl" "http://localhost:3000"
 dotnet user-secrets set "Security:PrivateKey" "$PRIVATE_KEY"
+
+# Run backend api
+dotnet run
 ```
 
 ### To create XML report with Coverlet for all Tests projects in solution
