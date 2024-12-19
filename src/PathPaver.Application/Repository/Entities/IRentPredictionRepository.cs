@@ -15,4 +15,5 @@ namespace PathPaver.Application.Repository.Entities;
  */
 public interface IRentPredictionRepository : IBaseRepository<RentPrediction>
 {
+    public RentPrediction[] GetLast5();
 }
