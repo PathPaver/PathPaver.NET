@@ -29,6 +29,9 @@ dotnet user-secrets set "Security:PrivateKey" "$PRIVATE_KEY"
 
 ### To create XML report with Coverlet for all Tests projects in solution
 ```shell
+# For Dev tool env
+dotnet new tool-manifest
+
 # Install ReportGenerator tool at a global level
 dotnet tool install -g dotnet-reportgenerator-globaltool
 
