@@ -75,7 +75,7 @@ public class UserController(
         var emailAlreadyExists = userService.GetByEmail(newEmail)!=null;
 
         if (emailAlreadyExists)
-            return BadRequest("Email is invalid");
+            return BadRequest("Email is taken");
 
         var u = userService.GetByEmail(email);
 
