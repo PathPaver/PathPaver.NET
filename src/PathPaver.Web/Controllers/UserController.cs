@@ -5,6 +5,7 @@ using PathPaver.Application.DTOs;
 using PathPaver.Application.Services.Auth;
 using PathPaver.Application.Services.Entities;
 using PathPaver.Domain.Entities.Enum;
+using System.Xml.Linq;
 
 namespace PathPaver.Web.Controllers;
 
@@ -65,7 +66,7 @@ public class UserController(
         var email = updateUserDto.Email; var password = updateUserDto.Password;
         var newEmail = updateUserDto.NewEmail; var newPassword = updateUserDto.NewPassword;
 
-        if (!AuthService.IsValidEmail(email) || !AuthService.IsValidEmail(newEmail))
+        if (!(AuthService.IsValidEmail(email) && AuthService.IsValidEmail(newEmail)))
             return BadRequest("Email is invalid");
 
         if (email == newEmail && password == newPassword) 
