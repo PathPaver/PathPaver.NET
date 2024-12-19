@@ -9,7 +9,7 @@ public class UserService(IUserRepository userRepository)
     {
         var u = userRepository.GetByEmail(email);
 
-        if (u == null || !u.IsVisible) return null;
+        if (u == null || !(u.IsVisible ?? false)) return null;
         return u;
     }
 

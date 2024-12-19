@@ -20,4 +20,8 @@ public class RentPredictionService(IRentPredictionRepository rentPredictionRepos
     {
         rentPredictionRepository.Delete(id);
     }
+    public RentPrediction[] GetLast5()
+    {
+        return rentPredictionRepository.GetLast5();
+    }
 }

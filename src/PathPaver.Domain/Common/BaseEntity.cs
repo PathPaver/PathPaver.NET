@@ -14,7 +14,6 @@ public abstract class BaseEntity
     [Key]
     [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
     public ObjectId Id { get; set; }
-
-    public DateTime DateCreated { get; set; } = DateTime.Now;
-    public bool IsVisible { get; set; } = true;
+    public DateTime? DateCreated { get; set; } = DateTime.Now;
+    public bool? IsVisible { get; set; } = true;
 }

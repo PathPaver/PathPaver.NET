@@ -1,3 +1,4 @@
+using MongoDB.Driver.Linq;
 using PathPaver.Application.Repository.Entities;
 using PathPaver.Domain.Entities;
 using PathPaver.Persistence.Context;
@@ -9,4 +10,9 @@ public sealed class RentPredictionRepository(AppDbContext context) : BaseReposit
     #region Overrided Methods from BaseRepository
 
     #endregion
+
+    public RentPrediction[] GetLast5()
+    {
+        return context.RentPredictions.OrderByDescending(x => x.DateCreated).Take(5).ToArray();
+    }
 }

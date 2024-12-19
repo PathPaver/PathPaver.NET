@@ -25,7 +25,7 @@ public class Program
 
         /*
          * Serilog - Logging
-         * 
+         *
          * It go look at the appsettings.json file to check Serilog Config
          */
         Log.Logger = new LoggerConfiguration()
@@ -52,13 +52,14 @@ public class Program
         #endregion
 
         #region DBContext
-
+        
         var clientConnection = new MongoClient(DbSettings.ConnectionURI);
 
         builder.Services.AddDbContext<AppDbContext>(options =>
         {
             options.UseMongoDB(clientConnection, DbSettings.DatabaseName);
         });
+
         #endregion
 
         #region Scoped Services
@@ -68,6 +69,8 @@ public class Program
         builder.Services.AddScoped<AuthService>();
         builder.Services.AddScoped<UserService>();
         builder.Services.AddScoped<RentPredictionService>();
+        builder.Services.AddScoped<IGraphRepository, GraphRepository>();
+        builder.Services.AddScoped<GraphService>();
 
         #endregion
 
@@ -126,7 +129,7 @@ public class Program
          * Security Middleware for authorizations
          *
          * - Authentication related stuff should go here
-         * 
+         *
          * CORS + Authorization + Authentication Middleware
          */
 
@@ -144,11 +147,8 @@ public class Program
 
         #region Middlewares
 
-        if (app.Environment.IsDevelopment())
-        {
-            app.UseSwagger();
-            app.UseSwaggerUI();
-        }
+        app.UseSwagger();
+        app.UseSwaggerUI();
 
         app.UseSerilogRequestLogging(); // Change default logging to Serilog
         app.UseHttpsRedirection();
@@ -161,5 +161,3 @@ public class Program
         app.Run();
     }
 }
-
-
