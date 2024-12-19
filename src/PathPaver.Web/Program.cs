@@ -78,7 +78,7 @@ public class Program
 
         // PredictionEnginePool AKA the model that will predict our rent prices
         builder.Services.AddPredictionEnginePool<ApartmentInput, ApartmentOutput>()
-            .FromFile(modelName: "RentPricePredictor", filePath: OperatingSystem.IsWindows() ? "..\\PathPaver.ML\\Model\\model.zip" : "../PathPaver.ML/Model/model.zip",
+            .FromFile(modelName: "RentPricePredictor", filePath: builder.Configuration["ModelPath"],
                 watchForChanges: true);
 
         #endregion
