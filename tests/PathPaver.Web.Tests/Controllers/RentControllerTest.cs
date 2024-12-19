@@ -1,25 +1,25 @@
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.ML;
-using Moq;
+using Microsoft.Extensions.Options;
+using Microsoft.ML;
+using MongoDB.Bson;
+using PathPaver.Application.DTOs;
+using PathPaver.Application.Repository.Entities;
 using PathPaver.Application.Services.Entities;
-using PathPaver.ML;
 using PathPaver.Web.Controllers;
+using Moq;
+using PathPaver.ML;
 
 namespace PathPaver.Web.Tests.Controllers;
 
 [TestFixture]
 public class RentControllerTest
 {
-    private RentController _rentController;
+    #region Setup and TearDown
     
     [SetUp]
     public void SetUp()
     {
-        var mockedPredEnginePool = new Mock<PredictionEnginePool<ApartmentInput, ApartmentOutput>>();
-        var mockedRentPredService = new Mock<RentPredictionService>();
-
-        _rentController = new RentController(
-            mockedPredEnginePool.Object, 
-            mockedRentPredService.Object);
     }
 
     [TearDown]
@@ -28,9 +28,23 @@ public class RentControllerTest
         // destroying everything
     }
 
+    #endregion
+    
+    #region Test for PredictingRentPrice
+    
     [Test]
     public void PredictRentPrice_WhenReceivePredictionDto_ReturnPredictionOID()
     {
-        
+        // var result = _rentController.PredictRentPrice(_rentPredictionDto);
+        //
+        // var contentResult = result.Result as OkObjectResult;
+        //
+        // Assert.Multiple(() =>
+        // {
+        //     Assert.That(contentResult.StatusCode, Is.EqualTo(200));
+        //     Assert.That((string) contentResult.Value, Is.InstanceOf<string>());
+        // });
     }
+    
+    #endregion
 }
