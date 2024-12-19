@@ -6,6 +6,7 @@ using PathPaver.Web.Controllers;
 using Moq;
 using PathPaver.ML;
 using PathPaver.Domain.Entities;
+using PathPaver.Application.DTOs;
 
 namespace PathPaver.Web.Tests.Controllers;
 
@@ -94,5 +95,16 @@ public class RentControllerTest
         Assert.That(result, Is.InstanceOf<NotFoundObjectResult>());
     }
 
+    #endregion
+
+    #region Test for DTOs
+
+    [Test]
+    public void Test_DTO()
+    {
+        var rentOriginal = new RentPrediction(20, 2, 2, 2, 2, "New York", 2, "NY", "Abc-123");
+        var rentDTO = RentPredictionDto.FromRentPrediction(rentOriginal);
+        var rentView = RentViewDto.FromRentPrediction(rentOriginal);
+    }
     #endregion
 }
