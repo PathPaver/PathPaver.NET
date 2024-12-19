@@ -2,12 +2,7 @@ using PathPaver.Domain.Entities;
 
 namespace PathPaver.Application.DTOs;
 
-public record RentPreviewDto(
-    string Id,
-    float Price,
-    string Street,
-    string Region
-)
+public record RentPreviewDto(string Id, float Price, string Street, string Region)
 {
     public static RentPreviewDto FromRentPrediction(RentPrediction prediction)
     {
