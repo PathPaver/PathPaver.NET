@@ -16,7 +16,7 @@ public sealed class UserRepository(AppDbContext context) : BaseRepository<User>(
     
     public override void Update(string name, User updatedUser)
     {
-        if (AuthService.IsValidEmail(name) && AuthService.IsValidEmail(updatedUser.Email))
+        if (!(AuthService.IsValidEmail(name) && AuthService.IsValidEmail(updatedUser.Email)))
             return;
 
         var toUpdateUser = GetByEmail(name);
