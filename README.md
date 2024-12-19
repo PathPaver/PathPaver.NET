@@ -76,3 +76,11 @@ Before running this test, you must create a folder called "test-data", then add 
 Next, you'll need to download a tool called "jq". It allows json parsing through the command terminal. This is required for the run-test-load-script.sh file, to extract the token and store it in a csv file.
 
 Finally, to run the tests, you just need to run the file run-test-load-script.sh in a terminal, which will automatically do everything required for the artillery tests.
+
+```shell
+cd tests/Artillery
+
+touch test-data/login.json # Add email and password in json format
+
+./run-test-load-script.sh
+```
