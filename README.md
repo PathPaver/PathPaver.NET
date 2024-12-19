@@ -39,6 +39,7 @@ dotnet user-secrets set "MongoCluster:ConnectionURI" "$THE_MONGODB_URI"
 dotnet user-secrets set "MongoCluster:DatabaseName" "$THE_DATABASE_NAME"
 dotnet user-secrets set "FrontendUrl" "http://localhost:3000"
 dotnet user-secrets set "Security:PrivateKey" "$PRIVATE_KEY"
+dotnet user-secrets set "ModelPath" "../PathPaver.ML/Model/model.zip"
 
 # Run backend api
 dotnet run
