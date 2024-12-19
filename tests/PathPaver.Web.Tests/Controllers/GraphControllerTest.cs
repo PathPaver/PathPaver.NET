@@ -46,6 +46,7 @@ public class GraphControllerTest
 
     #endregion
 
+    #region GetGraphByName
 
     [Test]
     public void GetGraphByName_WhenNameIsRight_ReturnGraph()
@@ -81,4 +82,6 @@ public class GraphControllerTest
             Assert.That(contentResult.StatusCode, Is.EqualTo(404));
         });
     }
+
+    #endregion
 }
