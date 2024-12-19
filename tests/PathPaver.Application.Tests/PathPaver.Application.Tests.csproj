@@ -16,10 +16,15 @@
         <PackageReference Include="NUnit" Version="3.14.0"/>
         <PackageReference Include="NUnit.Analyzers" Version="3.9.0"/>
         <PackageReference Include="NUnit3TestAdapter" Version="4.5.0"/>
+        
     </ItemGroup>
 
     <ItemGroup>
         <Using Include="NUnit.Framework"/>
+    </ItemGroup>
+    
+    <ItemGroup>
+      <DotNetCliToolReference Include="dotnet-reportgenerator-cli" Version="4.0.0-alpha12" />
     </ItemGroup>
 
     <ItemGroup>
