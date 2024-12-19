@@ -77,6 +77,8 @@ Next, you'll need to download a tool called "jq". It allows json parsing through
 
 Finally, to run the tests, you just need to run the file run-test-load-script.sh in a terminal, which will automatically do everything required for the artillery tests.
 
+### Run Stress test script
+
 ```shell
 cd tests/Artillery
 
