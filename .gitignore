@@ -9,6 +9,9 @@ Logs/
 project.lock.json
 .vs/
 
+coverage/
+.config/
+
 # mstest test results
 TestResults
 
