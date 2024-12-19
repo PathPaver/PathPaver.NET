@@ -27,6 +27,18 @@ dotnet user-secrets set "FrontendUrl" "http://localhost:3000"
 dotnet user-secrets set "Security:PrivateKey" "$PRIVATE_KEY"
 ```
 
+### To create XML report with Coverlet for all Tests projects in solution
+```shell
+# Install ReportGenerator tool at a global level
+dotnet tool install -g dotnet-reportgenerator-globaltool
+
+# Generate xml coverage files
+dotnet test --collect:"XPlat Code Coverage" "PathPaver.sln" --results-directory:"coverage/"
+
+# Generate HTML Report with ReportGenerator
+dotnet reportgenerator "-reports:coverage/*/coverage.cobertura.xml" "-targetdir:coverage/report/coveragereport" -reporttypes:Html
+```
+
 ## Domain Layer
 
 the project that contains the domain layer, including the entities, value objects, and domain services
