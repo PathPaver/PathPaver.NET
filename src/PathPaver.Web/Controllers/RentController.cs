@@ -122,4 +122,22 @@ public class RentController(
      
         return Ok(RentViewDto.FromRentPrediction(rentPrediction));
     }
+
+    /// <summary>
+    /// Get a prediction by id.
+    /// </summary>
+    [HttpGet("predictions/last-5")]
+    [ProducesResponseType<int>(StatusCodes.Status200OK)]
+    [ProducesResponseType<int>(StatusCodes.Status404NotFound)]
+    public IActionResult FindPrediction()
+    {
+        var rentPrediction = rentPredictionService.GetLast5();
+        
+        if (rentPrediction is null)
+        {
+            return NotFound(new ApiResponse("No prediction found."));
+        }
+     
+        return Ok(rentPrediction);
+    }
 }
