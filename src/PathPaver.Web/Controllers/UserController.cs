@@ -66,11 +66,11 @@ public class UserController(
         var email = updateUserDto.Email; var password = updateUserDto.Password;
         var newEmail = updateUserDto.NewEmail; var newPassword = updateUserDto.NewPassword;
 
+        if (email == newEmail && password == newPassword)
+            return BadRequest("Email and/or password is the same");
+
         if (!(AuthService.IsValidEmail(email) && AuthService.IsValidEmail(newEmail)))
             return BadRequest("Email is invalid");
-
-        if (email == newEmail && password == newPassword) 
-            return BadRequest("Email and/or password is the same");
         
         var emailAlreadyExists = userService.GetByEmail(newEmail)!=null;
 
