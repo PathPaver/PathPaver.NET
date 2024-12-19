@@ -8,7 +8,7 @@ public class AppDbContext(DbContextOptions options) : DbContext(options)
 {
     public DbSet<User> Users { get; init; }
     public DbSet<RentPrediction> RentPredictions { get; init; }
-    public DbSet<Graph> GraphData { get; init; }
+    public DbSet<Graph> Graphs { get; init; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
