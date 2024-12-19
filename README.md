@@ -33,7 +33,7 @@ dotnet user-secrets set "Security:PrivateKey" "$PRIVATE_KEY"
 dotnet new tool-manifest
 
 # Install ReportGenerator tool at a global level
-dotnet tool install -g dotnet-reportgenerator-globaltool
+dotnet tool install dotnet-reportgenerator-globaltool
 
 # Generate xml coverage files
 dotnet test --collect:"XPlat Code Coverage" "PathPaver.sln" --results-directory:"coverage/"
