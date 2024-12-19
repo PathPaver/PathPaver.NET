@@ -71,7 +71,7 @@ public class UserControllerTest
 
         _userDto = new UpdateUserDto(_users["exist"].Email, _users["exist"].Password, _users["valid"].Email, _users["valid"].Password);
         _userDtoSame = new UpdateUserDto(_users["exist"].Email, _users["exist"].Password, _users["exist"].Email, _users["exist"].Password);
-        _userDtoInvalid = new UpdateUserDto(_users["invalid"].Email, _users["invalid"].Password, _users["invalid"].Email, _users["invalid"].Password);
+        _userDtoInvalid = new UpdateUserDto(_users["invalid"].Email, _users["invalid"].Password, _users["invalid"].Email, _users["exist"].Password);
         _userDtoFailAuth = new UpdateUserDto(_users["exist"].Email, _users["dontExist"].Password, _users["exist"].Email, _users["exist"].Password);
 
         _authDto = _users["exist"];
