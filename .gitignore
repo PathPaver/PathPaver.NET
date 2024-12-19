@@ -125,3 +125,6 @@ src/.vs/config/applicationhost.config
 
 # Stress Test
 tests/Artillery/test-data/
+
+# Other
+.DS_Store
