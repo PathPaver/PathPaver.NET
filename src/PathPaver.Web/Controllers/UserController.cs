@@ -67,7 +67,7 @@ public class UserController(
         var newEmail = updateUserDto.NewEmail; var newPassword = updateUserDto.NewPassword;
 
         if (email == newEmail && password == newPassword)
-            return BadRequest("Email and/or password is the same");
+            return BadRequest("Email and password is the same");
 
         if (!(AuthService.IsValidEmail(email) && AuthService.IsValidEmail(newEmail)))
             return BadRequest("Email is invalid");
