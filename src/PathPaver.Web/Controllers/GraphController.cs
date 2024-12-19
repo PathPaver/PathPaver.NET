@@ -1,5 +1,7 @@
 using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
+using PathPaver.Application.Services.Entities;
+using PathPaver.Application.Repository.Entities.RentsScripts;
 
 namespace PathPaver.Web.Controllers;
 
@@ -7,35 +9,43 @@ namespace PathPaver.Web.Controllers;
 [Route("/api/v1/graph")]
 public class GraphController : ControllerBase
 {
+    private readonly IRentAppCount _appCountService;
+    private readonly IRentBestValue _bestValueService;
+    private readonly IRentCheapest _cheapestService;
+    private readonly IRentLargest _largestService;
+    private readonly IRentPriceRange _priceRangeService;
+    public GraphController(IRentAppCount rentAppCount, IRentBestValue rentBestValue, IRentCheapest rentCheapest, IRentLargest rentLargest, IRentPriceRange rentPriceRange)
+    {
+        _appCountService = rentAppCount;
+        _bestValueService = rentBestValue;
+        _cheapestService = rentCheapest;
+        _largestService = rentLargest;
+        _priceRangeService = rentPriceRange;
+    }
     [HttpGet("{graph_name}")]
     [ProducesResponseType<int>(StatusCodes.Status200OK)]
     [ProducesResponseType<int>(StatusCodes.Status404NotFound)]
-    public async Task<IActionResult> GetGraph(string graph_name, [FromQuery] string pet_choice = "All", [FromQuery] bool furnished = false, [FromQuery] int beds = 0)
+    public async Task<IActionResult> GetGraph(string graph_name)
     {
-        var rootPath = Directory.GetParent(AppContext.BaseDirectory)?.Parent?.Parent?.Parent?.FullName; // Root directory of the project
-        var graphPath = Path.Combine(rootPath, $"Scripts/{graph_name}.py"); // Finds the path of the python script to run according to graph name
-        if (graph_name == "cheapest_price") // cheapest_price.py requires arguments
+        switch (graph_name)
         {
-            graphPath += $" {pet_choice} {furnished} {beds}";
+            case "app_count":
+                var countResults = await _appCountService.GetAppCount();
+                return Ok(countResults);
+            case "best_value":
+                var valueResults = await _bestValueService.GetBestValue();
+                return Ok(valueResults);
+            case "cheapest_price":
+                var cheapestResults = await _cheapestService.GetCheapest();
+                return Ok(cheapestResults);
+            case "largest_app":
+                var largestResults = await _largestService.GetLargest();
+                return Ok(largestResults);
+            case "price_range":
+                var rangeResults = await _priceRangeService.GetPriceRange();
+                return Ok(rangeResults);
+            default:
+                return NotFound();
         }
-        ProcessStartInfo p = new ProcessStartInfo(); // Process to run the python script
-        p.FileName = "python";
-        p.Arguments = $"{graphPath}";
-        p.RedirectStandardOutput = true;
-        p.RedirectStandardError = true;
-        p.CreateNoWindow = true;
-        p.UseShellExecute = false;
-
-        using var process = Process.Start(p);
-        var error = await process.StandardError.ReadToEndAsync();
-        var output = await process.StandardOutput.ReadToEndAsync();
-        await process.WaitForExitAsync();
-        Console.WriteLine(error);
-        Console.WriteLine(output);
-        if (process.ExitCode != 0)
-        {
-            return NotFound();
-        }
-        return Content(output, "application/json");
     }
 }

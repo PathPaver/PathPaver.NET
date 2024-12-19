@@ -7,8 +7,10 @@ using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using MongoDB.Driver;
 using PathPaver.Application.Repository.Entities;
+using PathPaver.Application.Repository.Entities.RentsScripts;
 using PathPaver.Application.Services.Auth;
 using PathPaver.Application.Services.Entities;
+using PathPaver.Application.Services.Entities.RentsScripts;
 using PathPaver.ML;
 using PathPaver.Persistence;
 using PathPaver.Persistence.Context;
@@ -64,6 +66,12 @@ builder.Services.AddScoped<IRentPredictionRepository, RentPredictionRepository>(
 builder.Services.AddScoped<AuthService>();
 builder.Services.AddScoped<UserService>();
 builder.Services.AddScoped<RentPredictionService>();
+builder.Services.AddScoped<IGraphRepository, GraphRepository>();
+builder.Services.AddScoped<IRentAppCount, RentAppCountService>();
+builder.Services.AddScoped<IRentBestValue, RentBestValueService>();
+builder.Services.AddScoped<IRentCheapest, RentCheapestService>();
+builder.Services.AddScoped<IRentLargest, RentLargestService>();
+builder.Services.AddScoped<IRentPriceRange, RentPriceRangeService>();
 
 #endregion
 
