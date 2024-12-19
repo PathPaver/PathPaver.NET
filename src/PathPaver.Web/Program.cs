@@ -144,11 +144,8 @@ public class Program
 
         #region Middlewares
 
-        if (app.Environment.IsDevelopment())
-        {
-            app.UseSwagger();
-            app.UseSwaggerUI();
-        }
+        app.UseSwagger();
+        app.UseSwaggerUI();
 
         app.UseSerilogRequestLogging(); // Change default logging to Serilog
         app.UseHttpsRedirection();
