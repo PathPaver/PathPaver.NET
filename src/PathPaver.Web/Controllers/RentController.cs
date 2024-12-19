@@ -137,7 +137,7 @@ public class RentController(
         {
             return NotFound(new ApiResponse("No prediction found."));
         }
-        Console.WriteLine(rentPrediction[0].Id.ToString());
+
         List<RentPreviewDto> list = [];
         foreach (var item in rentPrediction)
         {
