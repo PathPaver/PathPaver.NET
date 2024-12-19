@@ -1,6 +1,6 @@
 # PathPaver Backend
 
-Clean Architecture ASP.NET Core project using .NET 8.0
+Clean Architecture ASP.NET Core project using .NET 8.0.
 
 ## Requirements
 
