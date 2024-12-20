@@ -11,6 +11,7 @@ Clean Architecture ASP.NET Core project using .NET 8.0.
 - .NET 8
 - ASP.NET
 - Serilog
+- ML.NET
 - Artillery
 - EntityFramework
 - MongoDB
